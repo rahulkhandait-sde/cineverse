@@ -1,13 +1,7 @@
 import { SearchResponse, MovieDetails } from "../types/movie";
 
-const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-const BASE_URL = "http://www.omdbapi.com/";
-
-if (!API_KEY) {
-	throw new Error(
-		"OMDB API key is not configured. Please add NEXT_PUBLIC_OMDB_API_KEY to your environment variables."
-	);
-}
+const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY || "7ae27826";
+const BASE_URL = "https://www.omdbapi.com/";
 
 interface SearchParams {
 	s: string;

@@ -1,291 +1,189 @@
-# 🎬 CineVerse - Premium Movie Search Platform
+# 🎬 MovieSearch App
 
-<p align="center">
-  <img src="public/favicon.svg" alt="CineVerse Logo" width="100" height="100">
-</p>
+A beautiful and modern movie search application built with Next.js, TypeScript, and the OMDB API. This app allows users to search for movies, view detailed information, and rate their favorites.
 
-<p align="center">
-  <strong>A modern, premium movie search application inspired by Netflix, IMDb, and BookMyShow</strong>
-</p>
+## ✨ Features
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-15.3.4-black?style=for-the-badge&logo=next.js" alt="Next.js">
-  <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Tailwind-3.4.17-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/Redux-2.8.2-764ABC?style=for-the-badge&logo=redux" alt="Redux Toolkit">
-</p>
+### Core Functionality
 
-## 🌟 Features
+- **Movie Search**: Search for movies by title with auto-complete and debounced API calls
+- **Movie Details**: View detailed information including plot, cast, ratings, and more
+- **User Ratings**: Rate movies with a 5-star rating system (stored locally)
+- **Dark Mode**: Toggle between light and dark themes with persistence
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 
-### 🎨 Premium UI/UX
+### Pages
 
-- **Glassmorphic Design**: Beautiful glass-like effects with backdrop blur
-- **Gradient Animations**: Dynamic gradients and smooth transitions
-- **Dark/Light Mode**: Seamless theme switching with system preference detection
-- **Responsive Design**: Mobile-first approach that works on all devices
-- **Premium Loading States**: Shimmer effects and skeleton screens
-- **Interactive Animations**: Smooth hover effects and micro-interactions
+- **`/movies`** - Movie list page with search functionality
+- **`/movies/[id]`** - Individual movie details page
 
-### 🔍 Advanced Search & Filtering
+### UI/UX Features
 
-- **Real-time Search**: Instant search results with debouncing
-- **Smart Filters**: Year range, genre, and type filtering
-- **Suggestion Pills**: Clickable search suggestions
-- **Infinite Pagination**: Load more movies with progress indicators
-- **Empty States**: Beautiful illustrations for no results
+- Modern and clean design inspired by popular movie platforms
+- Smooth animations and transitions using Framer Motion
+- Loading states and error handling
+- Skeleton loading for better UX
+- Beautiful gradient backgrounds and cards
 
-### 🎬 Movie Experience
+## 🛠️ Tech Stack
 
-- **Detailed Movie Pages**: Comprehensive movie information
-- **Star Ratings**: Interactive 5-star rating system with persistence
-- **High-Quality Posters**: Optimized image loading and fallbacks
-- **Toast Notifications**: User feedback for interactions
-- **Dynamic Titles**: Page titles that update based on content
+- **Framework**: Next.js 15.3 with App Router
+- **Language**: TypeScript
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **Components**: Custom UI components with shadcn/ui patterns
+- **Icons**: Lucide React
+- **Animations**: Framer Motion
+- **API**: OMDB API for movie data
 
-### ⚡ Performance & Technical
-
-- **Next.js 15**: Latest App Router with optimized performance
-- **Redux Toolkit**: Efficient state management
-- **React Query**: Server state management and caching
-- **TypeScript**: Full type safety
-- **PWA Ready**: Manifest and icons for mobile installation
-
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js (v18 or higher)
 - npm or yarn
-- OMDB API key (free)
 
 ### Installation
 
-1. **Clone the repository**
+1. Clone the repository:
 
-   ```bash
-   git clone <repository-url>
-   cd movie-search
-   ```
+```bash
+git clone <repository-url>
+cd movie-search
+```
 
-2. **Install dependencies**
+2. Install dependencies:
 
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+```bash
+npm install
+```
 
-3. **Get your OMDB API key**
+3. Start the development server:
 
-   - Visit [OMDB API](http://www.omdbapi.com/apikey.aspx)
-   - Sign up for a free API key
-   - Copy your API key
+```bash
+npm run dev
+```
 
-4. **Setup environment variables**
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-   ```bash
-   cp .env.example .env.local
-   ```
+## 📱 Usage
 
-   Edit `.env.local` and add your API key:
+### Searching for Movies
 
-   ```env
-   NEXT_PUBLIC_OMDB_API_KEY=your_api_key_here
-   ```
+1. Navigate to the Movies page
+2. Use the search bar to enter a movie title
+3. Results will appear automatically as you type (debounced)
+4. Click on any movie card to view detailed information
 
-5. **Run the development server**
+### Rating Movies
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+1. Go to a movie's detail page
+2. Click on the stars to rate the movie (1-5 stars)
+3. Your rating will be saved locally and persist across sessions
 
-6. **Open in browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+### Dark Mode
 
-## �️ Tech Stack
+- Use the toggle button in the header to switch between light and dark modes
+- Your preference will be saved and applied on future visits
 
-### Frontend Framework
+## 🎯 Key Features Implemented
 
-- **Next.js 15.3.4** - React framework with App Router
-- **React 19** - Latest React with concurrent features
-- **TypeScript 5** - Type safety and developer experience
+### ✅ Required Features
 
-### Styling & UI
+- [x] Movie search with OMDB API integration
+- [x] Movie listing page (`/movies`)
+- [x] Movie details page (`/movies/:id`)
+- [x] Debounced search functionality
+- [x] Star rating system with local storage
+- [x] Dark mode toggle with persistence
+- [x] Responsive design
+- [x] TypeScript implementation
+- [x] Redux Toolkit for state management
 
-- **Tailwind CSS 3.4.17** - Utility-first CSS framework
-- **Framer Motion 12.19.1** - Smooth animations and transitions
-- **Lucide React** - Beautiful, customizable icons
-- **Class Variance Authority** - Component variants
+### ✅ Bonus Features
 
-### State Management
+- [x] Framer Motion animations
+- [x] Advanced loading and error states
+- [x] Beautiful modern UI design
+- [x] Proper image handling with fallbacks
+- [x] SEO-friendly structure
 
-- **Redux Toolkit 2.8.2** - Efficient Redux with modern patterns
-- **TanStack React Query 5.81.2** - Server state management
-- **React Redux 9.2.0** - React bindings for Redux
+## 🔧 API Configuration
 
-### Development Tools
+The app uses the OMDB API with the provided API key: `7ae27826`
 
-- **ESLint** - Code linting and formatting
-- **PostCSS** - CSS processing
-- **Autoprefixer** - CSS vendor prefixes
+Example API endpoints:
+
+- Search: `http://www.omdbapi.com/?s=movie&apikey=7ae27826`
+- Details: `http://www.omdbapi.com/?i=tt123456&apikey=7ae27826`
 
 ## 📁 Project Structure
 
 ```
 src/
-├── app/                     # Next.js App Router
-│   ├── globals.css         # Global styles and animations
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Home page
-│   ├── providers.tsx       # App providers
-│   └── movies/
-│       ├── page.tsx        # Movies search page
-│       └── [id]/page.tsx   # Movie details page
-├── components/             # Reusable components
-│   ├── ui/                 # Base UI components
-│   ├── Header.tsx          # Navigation header
-│   ├── SearchBar.tsx       # Search with filters
-│   ├── MovieCard.tsx       # Movie display card
-│   ├── MovieGrid.tsx       # Movies grid layout
-│   ├── LoadingStates.tsx   # Loading and empty states
-│   └── DarkModeToggle.tsx  # Theme toggle
-├── hooks/                  # Custom React hooks
-│   ├── useDebounce.ts      # Search debouncing
-│   └── useMovieQueries.ts  # Movie API queries
-├── services/               # API services
-│   └── movieApi.ts         # OMDB API integration
-├── store/                  # Redux store
-│   ├── store.ts            # Store configuration
-│   └── movieSlice.ts       # Movies state slice
-├── types/                  # TypeScript definitions
-│   └── movie.ts            # Movie data types
-├── lib/                    # Utilities
-│   └── utils.ts            # Helper functions
-└── providers/              # Context providers
-    └── ReactQueryProvider.tsx
+├── app/                    # Next.js app directory
+│   ├── movies/            # Movies pages
+│   │   ├── [id]/         # Dynamic movie detail pages
+│   │   └── page.tsx      # Movies listing page
+│   ├── globals.css       # Global styles
+│   ├── layout.tsx        # Root layout
+│   ├── page.tsx          # Home page (redirects to /movies)
+│   └── providers.tsx     # Redux and theme providers
+├── components/            # React components
+│   ├── ui/               # Reusable UI components
+│   ├── DarkModeToggle.tsx
+│   ├── Header.tsx
+│   ├── MovieCard.tsx
+│   ├── MovieGrid.tsx
+│   └── SearchBar.tsx
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility functions
+├── services/             # API services
+├── store/                # Redux store and slices
+└── types/                # TypeScript type definitions
 ```
 
-## � API Integration
+## 🎨 Design Decisions
 
-### OMDB API
+### State Management
 
-The app uses the [OMDB API](http://www.omdbapi.com/) for movie data:
+- **Redux Toolkit** for global state management
+- Local storage for user preferences (ratings, dark mode)
+- Debounced search to optimize API calls
 
-- **Search Movies**: `GET /?s={query}&type=movie&y={year}`
-- **Movie Details**: `GET /?i={imdbID}&type=movie`
-- **Rate Limiting**: 1000 requests per day (free tier)
+### UI/UX
 
-### API Configuration
+- Clean, modern design with consistent spacing and typography
+- Card-based layout for movie listings
+- Smooth transitions and hover effects
+- Proper loading states and error handling
+- Accessible color contrasts in both light and dark modes
 
-```typescript
-// services/movieApi.ts
-const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-const BASE_URL = "https://www.omdbapi.com/";
-```
+### Performance
 
-### Error Handling
+- Image optimization with Next.js Image component
+- Debounced search to reduce API calls
+- Lazy loading and code splitting
+- Efficient re-renders with proper React patterns
 
-- Network error handling with retry logic
-- API rate limit detection
-- User-friendly error messages
-- Fallback states for missing data
-
-## 🎨 Design System
-
-### Color Palette
-
-```css
-/* Light Mode */
---background: 0 0% 100%;
---foreground: 222.2 84% 4.9%;
---primary: 221.2 83.2% 53.3%;
-
-/* Dark Mode */
---background: 222.2 84% 4.9%;
---foreground: 210 40% 98%;
---primary: 217.2 91.2% 59.8%;
-```
-
-### Typography
-
-- **Font Family**: Inter, system-ui, sans-serif
-- **Scales**: text-xs to text-6xl
-- **Weights**: 300 (light) to 900 (black)
-
-### Components
-
-- **Glassmorphism**: backdrop-blur with opacity overlays
-- **Gradients**: Dynamic color transitions
-- **Shadows**: Multi-layer shadows for depth
-- **Animations**: Smooth transitions and micro-interactions
-
-## 🔧 Scripts
+## 🧪 Available Scripts
 
 ```bash
-# Development
 npm run dev          # Start development server
-
-# Production
 npm run build        # Build for production
 npm run start        # Start production server
-
-# Code Quality
 npm run lint         # Run ESLint
 ```
 
-## � Environment Variables
+## 🌟 Future Enhancements
 
-Create a `.env.local` file in the root directory:
-
-```env
-# Required: OMDB API Key
-NEXT_PUBLIC_OMDB_API_KEY=your_api_key_here
-
-# Optional: Analytics (if implemented)
-# NEXT_PUBLIC_GA_ID=your_google_analytics_id
-```
-
-## 📱 PWA Support
-
-The app includes PWA (Progressive Web App) features:
-
-- **Manifest**: `public/manifest.json`
-- **Icons**: Multiple sizes for different platforms
-- **Service Worker**: (Ready for implementation)
-- **Mobile Installation**: Add to home screen support
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **OMDB API** for providing comprehensive movie data
-- **Vercel** for hosting and deployment platform
-- **Tailwind CSS** for the incredible utility-first framework
-- **Lucide** for beautiful, consistent icons
-- **Next.js team** for the amazing React framework
-
-## 📞 Support
-
-If you have any questions or need help:
-
-1. Check the [Issues](../../issues) page
-2. Create a new issue with detailed information
-3. Include screenshots for UI-related issues
+- Add user authentication
+- Implement watchlist functionality
+- Add movie recommendations
+- Include trailers and additional media
+- Add advanced filtering options
+- Implement movie comparison features
 
 ---
 
-<p align="center">
-  Made with ❤️ using Next.js, TypeScript, and Tailwind CSS
-</p>
+Built with ❤️ using Next.js and the OMDB API

@@ -94,7 +94,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 					isNavigating
 						? "ring-2 ring-red-400/50 ring-offset-2 ring-offset-black"
 						: ""
-				} rounded-xl`}>
+				}`}>
 				<div className='aspect-[2/3] relative bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 overflow-hidden flex-shrink-0'>
 					{movie.Poster && movie.Poster !== "N/A" && !imageError ? (
 						<>
@@ -246,7 +246,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 					)}
 				</div>
 
-				<CardContent className='p-5 flex flex-col bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-0 rounded-b-xl'>
+				<CardContent className='p-5 flex flex-col bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-t-0'>
 					<div className='flex-1'>
 						<Link href={`/movies/${movie.imdbID}`} onClick={handleCardClick}>
 							<h3 className='font-bold text-lg mb-3 line-clamp-2 text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer leading-tight'>
