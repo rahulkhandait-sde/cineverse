@@ -18,6 +18,7 @@
 ## 🌟 Features
 
 ### 🎨 Premium UI/UX
+
 - **Glassmorphic Design**: Beautiful glass-like effects with backdrop blur
 - **Gradient Animations**: Dynamic gradients and smooth transitions
 - **Dark/Light Mode**: Seamless theme switching with system preference detection
@@ -26,6 +27,7 @@
 - **Interactive Animations**: Smooth hover effects and micro-interactions
 
 ### 🔍 Advanced Search & Filtering
+
 - **Real-time Search**: Instant search results with debouncing
 - **Smart Filters**: Year range, genre, and type filtering
 - **Suggestion Pills**: Clickable search suggestions
@@ -33,6 +35,7 @@
 - **Empty States**: Beautiful illustrations for no results
 
 ### 🎬 Movie Experience
+
 - **Detailed Movie Pages**: Comprehensive movie information
 - **Star Ratings**: Interactive 5-star rating system with persistence
 - **High-Quality Posters**: Optimized image loading and fallbacks
@@ -40,6 +43,7 @@
 - **Dynamic Titles**: Page titles that update based on content
 
 ### ⚡ Performance & Technical
+
 - **Next.js 15**: Latest App Router with optimized performance
 - **Redux Toolkit**: Efficient state management
 - **React Query**: Server state management and caching
@@ -49,19 +53,22 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 - OMDB API key (free)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd movie-search
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -69,21 +76,25 @@
    ```
 
 3. **Get your OMDB API key**
+
    - Visit [OMDB API](http://www.omdbapi.com/apikey.aspx)
    - Sign up for a free API key
    - Copy your API key
 
 4. **Setup environment variables**
+
    ```bash
    cp .env.example .env.local
    ```
-   
+
    Edit `.env.local` and add your API key:
+
    ```env
    NEXT_PUBLIC_OMDB_API_KEY=your_api_key_here
    ```
 
 5. **Run the development server**
+
    ```bash
    npm run dev
    # or
@@ -96,22 +107,26 @@
 ## �️ Tech Stack
 
 ### Frontend Framework
+
 - **Next.js 15.3.4** - React framework with App Router
 - **React 19** - Latest React with concurrent features
 - **TypeScript 5** - Type safety and developer experience
 
 ### Styling & UI
+
 - **Tailwind CSS 3.4.17** - Utility-first CSS framework
 - **Framer Motion 12.19.1** - Smooth animations and transitions
 - **Lucide React** - Beautiful, customizable icons
 - **Class Variance Authority** - Component variants
 
 ### State Management
+
 - **Redux Toolkit 2.8.2** - Efficient Redux with modern patterns
 - **TanStack React Query 5.81.2** - Server state management
 - **React Redux 9.2.0** - React bindings for Redux
 
 ### Development Tools
+
 - **ESLint** - Code linting and formatting
 - **PostCSS** - CSS processing
 - **Autoprefixer** - CSS vendor prefixes
@@ -155,6 +170,7 @@ src/
 ## � API Integration
 
 ### OMDB API
+
 The app uses the [OMDB API](http://www.omdbapi.com/) for movie data:
 
 - **Search Movies**: `GET /?s={query}&type=movie&y={year}`
@@ -162,13 +178,15 @@ The app uses the [OMDB API](http://www.omdbapi.com/) for movie data:
 - **Rate Limiting**: 1000 requests per day (free tier)
 
 ### API Configuration
+
 ```typescript
 // services/movieApi.ts
 const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-const BASE_URL = 'https://www.omdbapi.com/';
+const BASE_URL = "https://www.omdbapi.com/";
 ```
 
 ### Error Handling
+
 - Network error handling with retry logic
 - API rate limit detection
 - User-friendly error messages
@@ -177,6 +195,7 @@ const BASE_URL = 'https://www.omdbapi.com/';
 ## 🎨 Design System
 
 ### Color Palette
+
 ```css
 /* Light Mode */
 --background: 0 0% 100%;
@@ -190,11 +209,13 @@ const BASE_URL = 'https://www.omdbapi.com/';
 ```
 
 ### Typography
+
 - **Font Family**: Inter, system-ui, sans-serif
 - **Scales**: text-xs to text-6xl
 - **Weights**: 300 (light) to 900 (black)
 
 ### Components
+
 - **Glassmorphism**: backdrop-blur with opacity overlays
 - **Gradients**: Dynamic color transitions
 - **Shadows**: Multi-layer shadows for depth
@@ -234,18 +255,6 @@ The app includes PWA (Progressive Web App) features:
 - **Icons**: Multiple sizes for different platforms
 - **Service Worker**: (Ready for implementation)
 - **Mobile Installation**: Add to home screen support
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
-
-### Other Platforms
-- **Netlify**: Build command `npm run build`, publish directory `out`
-- **Railway**: Automatic Next.js deployment
-- **Docker**: Dockerfile included for containerization
 
 ## 🤝 Contributing
 
