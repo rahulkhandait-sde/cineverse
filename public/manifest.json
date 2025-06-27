@@ -1,0 +1,61 @@
+{
+	"name": "CineVerse - Premium Movie Discovery Platform",
+	"short_name": "CineVerse",
+	"description": "Discover millions of movies, TV series, and episodes with CineVerse - Your premium cinematic universe awaits.",
+	"start_url": "/movies",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#DC2626",
+	"orientation": "portrait-primary",
+	"scope": "/",
+	"lang": "en",
+	"categories": ["entertainment", "movies", "lifestyle"],
+	"icons": [
+		{
+			"src": "/favicon.svg",
+			"sizes": "32x32",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		},
+		{
+			"src": "/icon-512.svg",
+			"sizes": "512x512",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/apple-touch-icon.svg",
+			"sizes": "180x180",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		},
+		{
+			"src": "/favicon.ico",
+			"sizes": "32x32",
+			"type": "image/x-icon"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "/favicon.svg",
+			"sizes": "1280x720",
+			"type": "image/svg+xml",
+			"form_factor": "wide",
+			"label": "CineVerse Movie Discovery"
+		}
+	],
+	"shortcuts": [
+		{
+			"name": "Search Movies",
+			"short_name": "Search",
+			"description": "Search for movies and TV series",
+			"url": "/movies",
+			"icons": [
+				{
+					"src": "/favicon.svg",
+					"sizes": "192x192"
+				}
+			]
+		}
+	]
+}

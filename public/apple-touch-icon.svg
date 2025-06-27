@@ -1,0 +1,46 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners for iOS -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DC2626"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#1E40AF"/>
+    </linearGradient>
+    <linearGradient id="filmGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F3F4F6"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Rounded background for iOS -->
+  <rect x="0" y="0" width="180" height="180" rx="40" fill="url(#bg)"/>
+  
+  <!-- Premium film strip design -->
+  <rect x="30" y="60" width="120" height="60" rx="8" fill="url(#filmGrad)" stroke="#E5E7EB" stroke-width="2"/>
+  
+  <!-- Film perforations -->
+  <circle cx="45" cy="75" r="4" fill="#DC2626"/>
+  <circle cx="45" cy="90" r="4" fill="#7C3AED"/>
+  <circle cx="45" cy="105" r="4" fill="#1E40AF"/>
+  <circle cx="135" cy="75" r="4" fill="#DC2626"/>
+  <circle cx="135" cy="90" r="4" fill="#7C3AED"/>
+  <circle cx="135" cy="105" r="4" fill="#1E40AF"/>
+  
+  <!-- Premium play button -->
+  <g filter="url(#glow)">
+    <path d="M75 75L105 90L75 105V75Z" fill="#7C3AED"/>
+  </g>
+  
+  <!-- Sparkle effects -->
+  <circle cx="60" cy="40" r="3" fill="#FBBF24" opacity="0.8"/>
+  <circle cx="120" cy="45" r="2" fill="#FBBF24" opacity="0.6"/>
+  <circle cx="130" cy="135" r="2.5" fill="#FBBF24" opacity="0.7"/>
+  <circle cx="50" cy="140" r="2" fill="#FBBF24" opacity="0.5"/>
+</svg>
