@@ -82,12 +82,14 @@ export const metadata: Metadata = {
 		shortcut: "/favicon.ico",
 	},
 	manifest: "/manifest.json",
-	viewport: {
-		width: "device-width",
-		initialScale: 1,
-		maximumScale: 5,
-		userScalable: true,
-	},
+	metadataBase: new URL("https://cineverse.app"),
+};
+
+export const viewport = {
+	width: "device-width",
+	initialScale: 1,
+	maximumScale: 5,
+	userScalable: true,
 	themeColor: [
 		{ media: "(prefers-color-scheme: light)", color: "#ffffff" },
 		{ media: "(prefers-color-scheme: dark)", color: "#000000" },

@@ -1,18 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-	Film,
-	Search,
-	Menu,
-	Bell,
-	User,
-	Play,
-	Home,
-	Heart,
-	Star,
-	Zap,
-} from "lucide-react";
+import { Film, Search, Menu, Bell, User, Home, Star, Zap } from "lucide-react";
 import { DarkModeToggle } from "./DarkModeToggle";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -75,28 +64,6 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
 						<span className='relative z-10 flex items-center gap-2'>
 							<Home className='w-4 h-4' />
 							Movies
-						</span>
-						<div className='absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 shadow-lg'></div>
-						<div className='absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full'></div>
-					</Link>
-
-					<Link
-						href='/tv-series'
-						className='relative group px-6 py-3 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-semibold tracking-wide'>
-						<span className='relative z-10 flex items-center gap-2'>
-							<Play className='w-4 h-4' />
-							TV Series
-						</span>
-						<div className='absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 shadow-lg'></div>
-						<div className='absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full'></div>
-					</Link>
-
-					<Link
-						href='/favorites'
-						className='relative group px-6 py-3 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-semibold tracking-wide'>
-						<span className='relative z-10 flex items-center gap-2'>
-							<Heart className='w-4 h-4' />
-							My List
 						</span>
 						<div className='absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 shadow-lg'></div>
 						<div className='absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full'></div>
