@@ -1,6 +1,6 @@
 import { SearchResponse, MovieDetails } from "../types/movie";
 
-const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY || "7ae27826";
+const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 const BASE_URL = "https://www.omdbapi.com/";
 
 interface SearchParams {
@@ -15,6 +15,10 @@ export const movieApi = {
 		query: string,
 		params: Partial<SearchParams> = {}
 	): Promise<SearchResponse> => {
+		if (!API_KEY) {
+			throw new Error("OMDB API key is not configured. Please set NEXT_PUBLIC_OMDB_API_KEY in your environment variables.");
+		}
+
 		const searchParams = new URLSearchParams({
 			s: query,
 			apikey: API_KEY,
@@ -36,6 +40,10 @@ export const movieApi = {
 		page: number = 1,
 		params: Partial<Omit<SearchParams, "page">> = {}
 	): Promise<SearchResponse> => {
+		if (!API_KEY) {
+			throw new Error("OMDB API key is not configured. Please set NEXT_PUBLIC_OMDB_API_KEY in your environment variables.");
+		}
+
 		const searchParams = new URLSearchParams({
 			s: query,
 			apikey: API_KEY,
@@ -53,12 +61,20 @@ export const movieApi = {
 	},
 
 	getMovieDetails: async (imdbID: string): Promise<MovieDetails> => {
+		if (!API_KEY) {
+			throw new Error("OMDB API key is not configured. Please set NEXT_PUBLIC_OMDB_API_KEY in your environment variables.");
+		}
+
 		const response = await fetch(`${BASE_URL}?i=${imdbID}&apikey=${API_KEY}`);
 		const data = await response.json();
 		return data;
 	},
 
 	getMoviesByTitle: async (title: string): Promise<SearchResponse> => {
+		if (!API_KEY) {
+			throw new Error("OMDB API key is not configured. Please set NEXT_PUBLIC_OMDB_API_KEY in your environment variables.");
+		}
+
 		const response = await fetch(
 			`${BASE_URL}?s=${encodeURIComponent(title)}&apikey=${API_KEY}`
 		);
