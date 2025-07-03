@@ -110,12 +110,7 @@ npm run dev
 
 ## 🔧 API Configuration
 
-The app uses the OMDB API with the provided API key: `7ae27826`
-
-Example API endpoints:
-
-- Search: `http://www.omdbapi.com/?s=movie&apikey=7ae27826`
-- Details: `http://www.omdbapi.com/?i=tt123456&apikey=7ae27826`
+The app uses the OMDB API with the provided API key
 
 ## 📁 Project Structure
 
