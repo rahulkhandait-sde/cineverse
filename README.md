@@ -179,6 +179,11 @@ npm run lint         # Run ESLint
 - Add advanced filtering options
 - Implement movie comparison features
 
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+
 ---
 
 Built with ❤️ using Next.js and the OMDB API
