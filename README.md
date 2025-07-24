@@ -1,4 +1,4 @@
-# 🎬 MovieSearch App
+# 🎬 CineVerse
 
 A beautiful and modern movie search application built with Next.js, TypeScript, and the OMDB API. This app allows users to search for movies, view detailed information, and rate their favorites.
 
