@@ -99,9 +99,6 @@ npm run dev
 - [x] Responsive design
 - [x] TypeScript implementation
 - [x] Redux Toolkit for state management
-
-### ✅ Bonus Features
-
 - [x] Framer Motion animations
 - [x] Advanced loading and error states
 - [x] Beautiful modern UI design
@@ -110,12 +107,7 @@ npm run dev
 
 ## 🔧 API Configuration
 
-The app uses the OMDB API with the provided API key: `7ae27826`
-
-Example API endpoints:
-
-- Search: `http://www.omdbapi.com/?s=movie&apikey=7ae27826`
-- Details: `http://www.omdbapi.com/?i=tt123456&apikey=7ae27826`
+The app uses the OMDB API with the provided API key
 
 ## 📁 Project Structure
 
@@ -183,6 +175,11 @@ npm run lint         # Run ESLint
 - Include trailers and additional media
 - Add advanced filtering options
 - Implement movie comparison features
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
 
 ---
 
