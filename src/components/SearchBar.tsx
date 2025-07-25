@@ -225,14 +225,15 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 									onFocus={handleInputFocus}
 									onBlur={handleInputBlur}
 									placeholder={placeholder}
-									className='w-full bg-transparent text-xl font-semibold text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none selection:bg-red-500/20 selection:text-red-900 dark:selection:text-red-100'
+									className='w-[500px] bg-transparent text-xl font-semibold text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none selection:bg-red-500/20 selection:text-red-900 dark:selection:text-red-100'
 								/>
 
 								{/* Enhanced focus glow */}
 								{isFocused && (
 									<motion.div
 										initial={{ scaleX: 0, opacity: 0 }}
-										animate={{ scaleX: 1, opacity: 1 }}
+										animate={{ scaleX: 1, opacity: 1, width: value ? '500px' : '100%'}}
+										transition={{duration: 0.3, ease: 'easeInOut'}}
 										className='absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 rounded-full'
 									/>
 								)}
@@ -242,7 +243,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 									<motion.div
 										initial={{ opacity: 0, scale: 0.8, x: 20 }}
 										animate={{ opacity: 1, scale: 1, x: 0 }}
-										className='absolute right-0 top-1/2 -translate-y-1/2'>
+										className='absolute right-0 top-1/2 -translate-y-1/2 -mt-5'>
 										<div className='flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500/20 via-purple-500/20 to-blue-500/20 dark:from-red-500/30 dark:via-purple-500/30 dark:to-blue-500/30 rounded-full border border-red-500/30 dark:border-red-400/40 backdrop-blur-sm'>
 											<motion.div
 												animate={{ scale: [1, 1.2, 1] }}
