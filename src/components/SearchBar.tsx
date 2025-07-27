@@ -17,7 +17,11 @@ import {
 	TrendingUp,
 	Film,
 	Sparkles,
+	Clock,
+	Trash2,
 } from "lucide-react";
+import { useSearchHistory } from "../hooks/useSearchHistory";
+import { searchHistoryUtils } from "../lib/utils";
 
 interface SearchBarProps {
 	value: string;
@@ -93,6 +97,16 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 		const inputRef = useRef<HTMLInputElement>(null);
 		const containerRef = useRef<HTMLDivElement>(null);
 
+		// Search history hook
+		const {
+			getSearchSuggestions,
+			getRecentSearches,
+			addToHistory,
+			clearHistory,
+			removeFromHistory,
+			hasHistory,
+		} = useSearchHistory();
+
 		const hasActiveFilters = year !== "" || genre !== "all";
 
 		// Expose focus and blur methods to parent components
@@ -130,15 +144,14 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 
 		const handleSuggestionClick = (suggestion: string) => {
 			onChange(suggestion);
+			addToHistory(suggestion); // Add to search history
 			setShowSuggestions(false);
 			inputRef.current?.focus();
 		};
 
 		const handleInputFocus = () => {
 			setIsFocused(true);
-			if (!value.trim()) {
-				setShowSuggestions(true);
-			}
+			setShowSuggestions(true); // Always show suggestions on focus
 		};
 
 		const handleInputBlur = () => {
@@ -150,7 +163,25 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 		const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
 			onChange(newValue);
-			setShowSuggestions(newValue.trim().length === 0);
+			setShowSuggestions(true); // Show suggestions when typing
+		};
+
+		// Handle search submission (e.g., on Enter key)
+		const handleSearchSubmit = (searchValue: string) => {
+			if (searchValue.trim()) {
+				addToHistory(searchValue.trim());
+			}
+		};
+
+		// Handle Enter key press
+		const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+			if (e.key === 'Enter' && value.trim()) {
+				handleSearchSubmit(value);
+				setShowSuggestions(false);
+			} else if (e.key === 'Escape') {
+				setShowSuggestions(false);
+				inputRef.current?.blur();
+			}
 		};
 
 		return (
@@ -224,6 +255,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 									onChange={handleInputChange}
 									onFocus={handleInputFocus}
 									onBlur={handleInputBlur}
+									onKeyDown={handleKeyDown}
 									placeholder={placeholder}
 									className='w-[500px] bg-transparent text-xl font-semibold text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none selection:bg-red-500/20 selection:text-red-900 dark:selection:text-red-100'
 								/>
@@ -418,7 +450,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 						</AnimatePresence>
 					</motion.div>
 
-					{/* Popular Suggestions Dropdown */}
+					{/* Enhanced Suggestions Dropdown with Search History */}
 					<AnimatePresence>
 						{showSuggestions && (
 							<motion.div
@@ -428,52 +460,130 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 								transition={{ duration: 0.2 }}
 								className='absolute top-full left-0 right-0 mt-4 z-50'>
 								<div className='bg-white/95 dark:bg-black/80 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden'>
-									{/* Suggestions Header */}
-									<div className='px-6 py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-red-500/5 via-purple-500/5 to-blue-500/5'>
-										<div className='flex items-center gap-3'>
-											<div className='w-8 h-8 bg-gradient-to-r from-red-500 to-purple-500 rounded-full flex items-center justify-center'>
-												<TrendingUp className='w-4 h-4 text-white' />
-											</div>
-											<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
-												Trending Searches
-											</h3>
-										</div>
-										<p className='text-sm text-gray-600 dark:text-gray-400 mt-1'>
-											Discover what&apos;s popular right now
-										</p>
-									</div>
+									{/* Search History Section */}
+									{(() => {
+										const searchSuggestions = getSearchSuggestions(value);
+										const recentSearches = getRecentSearches();
+										const showHistory = value.trim() ? searchSuggestions.length > 0 : recentSearches.length > 0;
+										const displayItems = value.trim() ? searchSuggestions : recentSearches;
 
-									{/* Suggestions Grid */}
-									<div className='p-6'>
-										<div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
-											{popularSearches.map((search, index) => (
-												<motion.button
-													key={search.text}
-													onClick={() => handleSuggestionClick(search.text)}
-													className={`group relative p-4 bg-gradient-to-r ${search.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
-													whileHover={{ scale: 1.02, y: -2 }}
-													whileTap={{ scale: 0.98 }}
-													initial={{ opacity: 0, y: 20 }}
-													animate={{ opacity: 1, y: 0 }}
-													transition={{ delay: index * 0.05 }}>
-													{/* Background glow effect */}
-													<div
-														className={`absolute inset-0 bg-gradient-to-r ${search.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
-													/>
-
-													<div className='relative flex flex-col items-center gap-2'>
-														<div className='text-2xl'>{search.icon}</div>
-														<span className='text-sm font-semibold text-gray-900 dark:text-white text-center leading-tight'>
-															{search.text}
-														</span>
+										return showHistory ? (
+											<>
+												<div className='px-6 py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-indigo-500/5'>
+													<div className='flex items-center justify-between'>
+														<div className='flex items-center gap-3'>
+															<div className='w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center'>
+																<Clock className='w-4 h-4 text-white' />
+															</div>
+															<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+																{value.trim() ? 'Search Suggestions' : 'Recent Searches'}
+															</h3>
+														</div>
+														{hasHistory && (
+															<motion.button
+																onClick={clearHistory}
+																className='flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 dark:hover:bg-red-500/20 rounded-lg transition-colors'
+																whileHover={{ scale: 1.05 }}
+																whileTap={{ scale: 0.95 }}>
+																<Trash2 className='w-3 h-3' />
+																Clear History
+															</motion.button>
+														)}
 													</div>
+													<p className='text-sm text-gray-600 dark:text-gray-400 mt-1'>
+														{value.trim() ? 'Based on your search history' : 'Your recent movie searches'}
+													</p>
+												</div>
 
-													{/* Hover shine effect */}
-													<div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12' />
-												</motion.button>
-											))}
-										</div>
-									</div>
+												<div className='p-4 max-h-60 overflow-y-auto'>
+													<div className='space-y-2'>
+														{displayItems.map((item: any, index: number) => (
+															<motion.div
+																key={`${item.query}-${item.timestamp}`}
+																initial={{ opacity: 0, x: -20 }}
+																animate={{ opacity: 1, x: 0 }}
+																transition={{ delay: index * 0.05 }}
+																className='group flex items-center justify-between p-3 hover:bg-gray-100/70 dark:hover:bg-white/5 rounded-lg transition-all duration-200'>
+																<motion.button
+																	onClick={() => handleSuggestionClick(item.query)}
+																	className='flex items-center gap-3 flex-1 text-left'
+																	whileHover={{ x: 4 }}>
+																	<div className='w-6 h-6 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0'>
+																		<Search className='w-3 h-3 text-blue-600 dark:text-blue-400' />
+																	</div>
+																	<div className='flex-1 min-w-0'>
+																		<span className='text-gray-900 dark:text-white font-medium'>
+																			{item.query}
+																		</span>
+																		<div className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
+																			{searchHistoryUtils.formatRelativeTime(item.timestamp)}
+																		</div>
+																	</div>
+																</motion.button>
+																<motion.button
+																	onClick={(e) => {
+																		e.stopPropagation();
+																		removeFromHistory(item.query);
+																	}}
+																	className='opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-500/10 dark:hover:bg-red-500/20 rounded-md transition-all duration-200'
+																	whileHover={{ scale: 1.1 }}
+																	whileTap={{ scale: 0.9 }}>
+																	<X className='w-3 h-3 text-gray-400 hover:text-red-500' />
+																</motion.button>
+															</motion.div>
+														))}
+													</div>
+												</div>
+											</>
+										) : null;
+									})()}
+
+									{/* Trending Searches Section */}
+									{(!value.trim() || !hasHistory) && (
+										<>
+											{hasHistory && <div className='border-t border-gray-200/50 dark:border-white/10' />}
+											<div className='px-6 py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-red-500/5 via-purple-500/5 to-blue-500/5'>
+												<div className='flex items-center gap-3'>
+													<div className='w-8 h-8 bg-gradient-to-r from-red-500 to-purple-500 rounded-full flex items-center justify-center'>
+														<TrendingUp className='w-4 h-4 text-white' />
+													</div>
+													<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+														Trending Searches
+													</h3>
+												</div>
+												<p className='text-sm text-gray-600 dark:text-gray-400 mt-1'>
+													Discover what&apos;s popular right now
+												</p>
+											</div>
+
+											<div className='p-6'>
+												<div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+													{popularSearches.map((search: any, index: number) => (
+														<motion.button
+															key={search.text}
+															onClick={() => handleSuggestionClick(search.text)}
+															className={`group relative p-4 bg-gradient-to-r ${search.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
+															whileHover={{ scale: 1.02, y: -2 }}
+															whileTap={{ scale: 0.98 }}
+															initial={{ opacity: 0, y: 20 }}
+															animate={{ opacity: 1, y: 0 }}
+															transition={{ delay: index * 0.05 }}>
+															<div
+																className={`absolute inset-0 bg-gradient-to-r ${search.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+															/>
+															<div className='relative flex flex-col items-center gap-2'>
+																<div className='text-2xl'>{search.icon}</div>
+																<span className='text-sm font-semibold text-gray-900 dark:text-white text-center leading-tight'>
+																	{search.text}
+																</span>
+															</div>
+															<div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12' />
+														</motion.button>
+													))}
+												</div>
+											</div>
+										</>
+									)}
 
 									{/* Footer */}
 									<div className='px-6 py-4 border-t border-gray-200/50 dark:border-white/10 bg-gray-50/80 dark:bg-white/5'>
