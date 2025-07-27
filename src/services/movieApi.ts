@@ -34,9 +34,36 @@ export const movieApi = {
             ),
         });
 
-        const response = await fetch(`${BASE_URL}?${searchParams.toString()}`);
-        const data = await response.json();
-        return data;
+        try {
+            const response = await fetch(`${BASE_URL}?${searchParams.toString()}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Handle API-specific errors
+            if (data.Response === "False") {
+                if (data.Error === "Invalid API key!") {
+                    throw new Error("Invalid API key. Please check your OMDB API key configuration.");
+                } else if (data.Error === "Too many results.") {
+                    throw new Error("Too many results. Please be more specific with your search.");
+                } else if (data.Error === "Movie not found!") {
+                    // Return empty results instead of throwing for "not found"
+                    return { Search: [], totalResults: "0", Response: "False", Error: data.Error };
+                } else {
+                    throw new Error(data.Error || "Unknown API error");
+                }
+            }
+            
+            return data;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw error;
+            }
+            throw new Error("Network error. Please check your internet connection and try again.");
+        }
     },
 
     // ==========================================================
@@ -89,9 +116,34 @@ export const movieApi = {
             ),
         });
 
-        const response = await fetch(`${BASE_URL}?${searchParams.toString()}`);
-        const data = await response.json();
-        return data;
+        try {
+            const response = await fetch(`${BASE_URL}?${searchParams.toString()}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Handle API-specific errors
+            if (data.Response === "False") {
+                if (data.Error === "Invalid API key!") {
+                    throw new Error("Invalid API key. Please check your OMDB API key configuration.");
+                } else if (data.Error === "Movie not found!") {
+                    // Return empty results for pagination
+                    return { Search: [], totalResults: "0", Response: "False", Error: data.Error };
+                } else {
+                    throw new Error(data.Error || "Unknown API error");
+                }
+            }
+            
+            return data;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw error;
+            }
+            throw new Error("Network error. Please check your internet connection and try again.");
+        }
     },
 
     getMovieDetails: async (imdbID: string): Promise<MovieDetails> => {
