@@ -289,6 +289,103 @@ select.premium-select option {
 	border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+/* Mobile-specific enhancements */
+@media (max-width: 768px) {
+	/* Better touch targets for mobile */
+	button, 
+	.touch-target {
+		min-height: 44px;
+		min-width: 44px;
+	}
+
+	/* Mobile-friendly search bar */
+	.mobile-search {
+		font-size: 16px; /* Prevents zoom on iOS */
+		-webkit-appearance: none;
+		border-radius: 12px;
+	}
+
+	/* Mobile dropdown spacing */
+	.mobile-dropdown {
+		max-height: 70vh;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* Improved mobile scrolling */
+	.smooth-scroll {
+		-webkit-overflow-scrolling: touch;
+		scroll-behavior: smooth;
+	}
+
+	/* Mobile-friendly card grid */
+	.mobile-grid {
+		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: 12px;
+	}
+
+	/* Mobile header height adjustment */
+	.mobile-header {
+		height: 64px;
+		padding: 0 16px;
+	}
+
+	/* Mobile safe area padding */
+	.mobile-safe-top {
+		padding-top: env(safe-area-inset-top);
+	}
+
+	.mobile-safe-bottom {
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+
+	/* Mobile keyboard adjustments */
+	.mobile-input-focused {
+		position: fixed !important;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		background: white;
+		border-radius: 0;
+	}
+
+	.dark .mobile-input-focused {
+		background: #000;
+	}
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+	.tablet-grid {
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 16px;
+	}
+
+	.tablet-search {
+		max-width: 600px;
+	}
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.crisp-edges {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
 .dark .premium-section {
 	background: linear-gradient(
 		135deg,
@@ -296,4 +393,181 @@ select.premium-select option {
 		rgba(17, 24, 39, 0.8) 100%
 	);
 	border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile optimizations and touch targets */
+@media (max-width: 768px) {
+	/* Ensure minimum touch target sizes */
+	button,
+	[role="button"],
+	input[type="button"],
+	input[type="submit"],
+	.touch-target {
+		min-height: 44px;
+		min-width: 44px;
+	}
+
+	/* Improved spacing for mobile readability */
+	.mobile-spacing {
+		padding: 1rem;
+		margin: 0.5rem 0;
+	}
+
+	/* Better mobile typography */
+	.mobile-text {
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	/* Mobile-friendly cards */
+	.mobile-card {
+		border-radius: 1rem;
+		padding: 1rem;
+		margin: 0.5rem;
+	}
+
+	/* Full-width mobile inputs */
+	.mobile-input {
+		width: 100%;
+		min-height: 48px;
+		padding: 12px 16px;
+		border-radius: 12px;
+		font-size: 16px; /* Prevents zoom on iOS */
+	}
+
+	/* Mobile navigation improvements */
+	.mobile-nav {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 50;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 0.75rem 1rem;
+	}
+
+	.dark .mobile-nav {
+		background: rgba(0, 0, 0, 0.95);
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	/* Better mobile search experience */
+	.mobile-search {
+		position: sticky;
+		top: 0;
+		z-index: 40;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 1rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.dark .mobile-search {
+		background: rgba(0, 0, 0, 0.95);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	/* Hide less important elements on small screens */
+	.mobile-hidden {
+		display: none;
+	}
+
+	/* Optimize grid layouts for mobile */
+	.mobile-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	/* Mobile-friendly modals */
+	.mobile-modal {
+		margin: 1rem;
+		max-height: calc(100vh - 2rem);
+		border-radius: 1rem;
+		overflow-y: auto;
+	}
+
+	/* Better mobile hover states (use active instead) */
+	.mobile-hover:active {
+		transform: scale(0.98);
+		opacity: 0.8;
+	}
+
+	/* Prevent horizontal scroll */
+	.mobile-container {
+		overflow-x: hidden;
+		max-width: 100vw;
+	}
+
+	/* Mobile-optimized shadows */
+	.mobile-shadow {
+		box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.15);
+	}
+
+	/* Better mobile focus states */
+	.mobile-focus:focus {
+		outline: 2px solid #dc2626;
+		outline-offset: 2px;
+	}
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+	.tablet-columns {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.tablet-spacing {
+		padding: 1.5rem;
+	}
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.high-dpi-image {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Dark mode mobile optimizations */
+@media (max-width: 768px) {
+	.dark .mobile-optimized {
+		background: rgba(0, 0, 0, 0.9);
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	.dark .mobile-border {
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+	.ios-fix {
+		-webkit-appearance: none;
+		border-radius: 0;
+	}
+
+	/* Fix for iOS zoom on input focus */
+	input[type="text"],
+	input[type="search"],
+	input[type="email"],
+	input[type="password"],
+	textarea,
+	select {
+		font-size: 16px !important;
+	}
 }
