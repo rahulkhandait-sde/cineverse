@@ -45,44 +45,91 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 
 	if (type === "grid") {
 		return (
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
-				{Array.from({ length: count }).map((_, i) => (
+			<div className="flex flex-col items-center justify-center py-32">
+				<motion.div
+					initial={{ scale: 0.8, opacity: 0 }}
+					animate={{ scale: 1, opacity: 1 }}
+					transition={{ duration: 0.5 }}
+					className="relative w-32 h-32 flex items-center justify-center">
 					<motion.div
-						key={i}
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5, delay: i * 0.1 }}
-						className='bg-black/20 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden'>
-						<div className='aspect-[2/3] bg-gradient-to-br from-gray-700/50 to-gray-800/50 relative'>
-							<motion.div
-								animate={{
-									background: [
-										"linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-										"linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-									],
-								}}
-								transition={{ duration: 1.5, repeat: Infinity }}
-								className='absolute inset-0'
+						animate={{ rotate: 360 }}
+						transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+						className="absolute inset-0 flex items-center justify-center">
+						<svg width="128" height="128" viewBox="0 0 128 128" className="w-32 h-32">
+							<circle
+								cx="64"
+								cy="64"
+								r="56"
+								fill="none"
+								stroke="url(#outer-gradient)"
+								strokeWidth="8"
+								strokeDasharray="60 200"
+								strokeLinecap="round"
 							/>
-							<div className='absolute inset-0 flex items-center justify-center'>
-								<motion.div
-									animate={{ rotate: 360 }}
-									transition={{
-										duration: 2,
-										repeat: Infinity,
-										ease: "linear",
-									}}>
-									<Film className='w-8 h-8 text-gray-500' />
-								</motion.div>
-							</div>
-						</div>
-						<div className='p-4'>
-							<div className='h-4 bg-gray-600/50 rounded mb-2 shimmer'></div>
-							<div className='h-3 bg-gray-700/50 rounded mb-2 shimmer'></div>
-							<div className='h-3 bg-gray-700/50 rounded w-2/3 shimmer'></div>
-						</div>
+							<defs>
+								<linearGradient id="outer-gradient" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+									<stop stopColor="#e11d48" />
+									<stop offset="0.5" stopColor="#a21caf" />
+									<stop offset="1" stopColor="#2563eb" />
+								</linearGradient>
+							</defs>
+						</svg>
 					</motion.div>
-				))}
+					<motion.div
+						animate={{ rotate: -360 }}
+						transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+						className="absolute inset-4 flex items-center justify-center">
+						<svg width="96" height="96" viewBox="0 0 96 96" className="w-24 h-24">
+							<circle
+								cx="48"
+								cy="48"
+								r="40"
+								fill="none"
+								stroke="url(#middle-gradient)"
+								strokeWidth="6"
+								strokeDasharray="40 120"
+								strokeLinecap="round"
+							/>
+							<defs>
+								<linearGradient id="middle-gradient" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+									<stop stopColor="#f59e42" />
+									<stop offset="1" stopColor="#e11d48" />
+								</linearGradient>
+							</defs>
+						</svg>
+					</motion.div>
+					<motion.div
+						animate={{ rotate: 360 }}
+						transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+						className="absolute inset-10 flex items-center justify-center">
+						<svg width="48" height="48" viewBox="0 0 48 48" className="w-12 h-12">
+							<circle
+								cx="24"
+								cy="24"
+								r="18"
+								fill="none"
+								stroke="#fff"
+								strokeWidth="4"
+								strokeDasharray="20 40"
+								strokeLinecap="round"
+								opacity="0.5"
+							/>
+						</svg>
+						<motion.div
+							animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+							transition={{ duration: 2, repeat: Infinity }}
+							className="absolute flex items-center justify-center w-12 h-12">
+							<Film className="w-8 h-8 text-red-500 drop-shadow-lg" />
+						</motion.div>
+					</motion.div>
+				</motion.div>
+				<motion.h3
+					animate={{ opacity: [0.5, 1, 0.5] }}
+					transition={{ duration: 1.5, repeat: Infinity }}
+					className="text-2xl font-bold text-red-500 mt-8 mb-2 text-center">
+					Loading Cinematic Content...
+				</motion.h3>
+				<p className="text-gray-400 text-center">Sit back and relax while we fetch your movies</p>
 			</div>
 		);
 	}

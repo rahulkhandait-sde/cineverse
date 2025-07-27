@@ -217,55 +217,19 @@ export default function MoviesPage() {
 					{/* Results Section */}
 					<AnimatePresence mode='wait'>
 						{isLoadingContent ? (
-							<motion.div
-								key='loading'
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.3 }}>
-								<LoadingSkeleton type='grid' count={10} />
-							</motion.div>
+							<LoadingSkeleton type='grid' count={10} />
 						) : error ? (
-							<motion.div
-								key='error'
-								initial={{ opacity: 0, scale: 0.95 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ duration: 0.3 }}>
-								<ErrorState
-									title='Failed to load movies'
-									message='There was an error loading the movies. Please check your connection and try again.'
-									onRetry={() => refetch()}
-								/>
-							</motion.div>
+							<ErrorState
+								title='Failed to load movies'
+								message='There was an error loading the movies. Please check your connection and try again.'
+								onRetry={() => refetch()}
+							/>
 						) : !hasQuery ? (
-							<motion.div
-								key='empty'
-								initial={{ opacity: 0, scale: 0.95 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ duration: 0.3 }}>
-								<EmptyState onSuggestionClick={handleSuggestionClick} />
-							</motion.div>
+							<EmptyState onSuggestionClick={handleSuggestionClick} />
 						) : !hasResults ? (
-							<motion.div
-								key='no-results'
-								initial={{ opacity: 0, scale: 0.95 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ duration: 0.3 }}>
-								<EmptyState
-									query={debouncedQuery}
-									onSuggestionClick={handleSuggestionClick}
-								/>
-							</motion.div>
+							<EmptyState query={debouncedQuery} onSuggestionClick={handleSuggestionClick} />
 						) : (
-							<motion.div
-								key='results'
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.3 }}>
+							<>
 								<motion.div
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
@@ -468,9 +432,10 @@ export default function MoviesPage() {
 										</div>
 									</motion.div>
 								)}
-							</motion.div>
+							</>
 						)}
 					</AnimatePresence>
+
 				</div>
 			</main>
 
