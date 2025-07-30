@@ -15,6 +15,9 @@ import {
 import { motion } from "framer-motion";
 import StatChart from "@/components/StatChart";
 import CustomTooltip from "@/components/CustomTooltip";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
 const parseBoxOffice = (value: string): number => {
   if (!value || value === "N/A") return 0;
   return parseInt(value.replace(/[^0-9]/g, ""), 10);
@@ -131,6 +134,45 @@ const ComparisonStats = () => {
   if (!isClient) {
     return null;
   }
+  const handleExportAsImage = () => {
+    const element = document.querySelector(".comparison-export-area");
+    if (!element) return;
+
+    element.classList.add("export-clean");
+
+    html2canvas(element as HTMLElement, { scale: 2, useCORS: true }).then(
+      (canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = "movie_comparison.png";
+        link.href = imgData;
+        link.click();
+
+        element.classList.remove("export-clean");
+      }
+    );
+  };
+
+  const handleExportAsPDF = () => {
+    const element = document.querySelector(".comparison-export-area");
+    if (!element) return;
+
+    element.classList.add("export-clean");
+
+    html2canvas(element as HTMLElement, { scale: 2, useCORS: true }).then(
+      (canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        const width = pdf.internal.pageSize.getWidth();
+        const height = (canvas.height * width) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, width, height);
+        pdf.save("movie_comparison.pdf");
+
+        element.classList.remove("export-clean");
+      }
+    );
+  };
 
   return (
     <motion.div
@@ -139,129 +181,142 @@ const ComparisonStats = () => {
       initial="hidden"
       animate="visible"
     >
-      <h2 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-500 pb-2">
-        🎬 Movie Comparison Stats
-      </h2>
+      <div className="comparison-export-area">
+        <h2 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-500 pb-2">
+          🎬 Movie Comparison Stats
+        </h2>
 
-      <motion.div variants={itemVariants}>
-        <StatChart
-          title="⏱ Runtime (minutes)"
-          dataKey="runtime"
-          data={primaryChartData}
-          barColor="#a855f7"
-        />
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <StatChart
-          title="⭐ IMDB Rating"
-          dataKey="imdbRating"
-          data={primaryChartData}
-          barColor="#22c55e"
-          domain={[0, 10]}
-        />
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <StatChart
-          title="💰 Box Office (USD)"
-          dataKey="boxOffice"
-          data={primaryChartData}
-          barColor="#f59e0b"
-          tickFormatter={formatBoxOfficeAxis}
-        />
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div variants={itemVariants}>
-          <InfoSection title="🎭 Genres">
-            <p className="text-purple-300 font-medium mb-3">
-              Common:{" "}
-              {commonGenres.length > 0 ? commonGenres.join(", ") : "None"}
-            </p>
-            <ul className="space-y-2">
-              {compareMovies.map((movie, i) => (
-                <li key={movie.imdbID} className="text-sm">
-                  <span className="font-bold text-gray-100">
-                    {movie.Title}:
-                  </span>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {uniqueGenresMap[i].length > 0 ? (
-                      uniqueGenresMap[i].map((genre, idx) => (
-                        <span
-                          key={idx}
-                          className="chip bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                        >
-                          {genre}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="text-gray-400 italic">None</span>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </InfoSection>
+          <StatChart
+            title="⏱ Runtime (minutes)"
+            dataKey="runtime"
+            data={primaryChartData}
+            barColor="#a855f7"
+            legendLabel="Runtime in Minutes"
+          />
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <InfoSection title="👥 Actors">
-            <p className="text-pink-300 font-medium mb-3">
-              Common:{" "}
-              {commonActors.length > 0 ? commonActors.join(", ") : "None"}
-            </p>
-            <ul className="space-y-2">
-              {compareMovies.map((movie, i) => (
-                <li key={movie.imdbID} className="text-sm">
-                  <span className="font-bold text-gray-100">
-                    {movie.Title}:
-                  </span>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {uniqueActorsMap[i].length > 0 ? (
-                      uniqueActorsMap[i].map((actor, idx) => (
-                        <span
-                          key={idx}
-                          className="chip bg-pink-500/20 text-pink-300 border border-pink-500/30"
-                        >
-                          {actor}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="text-gray-400 italic">None</span>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </InfoSection>
+          <StatChart
+            title="⭐ IMDB Rating"
+            dataKey="imdbRating"
+            data={primaryChartData}
+            barColor="#22c55e"
+            domain={[0, 10]}
+          />
         </motion.div>
+
         <motion.div variants={itemVariants}>
-          <InfoSection title="🏆 Awards & Release">
-            <ul className="space-y-3">
+          <StatChart
+            title="💰 Box Office (USD)"
+            dataKey="boxOffice"
+            data={primaryChartData}
+            barColor="#f59e0b"
+            tickFormatter={formatBoxOfficeAxis}
+          />
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div variants={itemVariants}>
+            <InfoSection title="🎭 Genres">
+              <p className="text-purple-300 font-medium mb-3">
+                Common:{" "}
+                {commonGenres.length > 0 ? commonGenres.join(", ") : "None"}
+              </p>
+              <ul className="space-y-2">
+                {compareMovies.map((movie, i) => (
+                  <li key={movie.imdbID} className="text-sm">
+                    <span className="font-bold text-gray-100">
+                      {movie.Title}:
+                    </span>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      {uniqueGenresMap[i].length > 0 ? (
+                        uniqueGenresMap[i].map((genre, idx) => (
+                          <span key={idx} className=" text-purple-300 ">
+                            {genre}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400 italic">None</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </InfoSection>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <InfoSection title="👥 Actors">
+              <p className="text-pink-300 font-medium mb-3">
+                Common:{" "}
+                {commonActors.length > 0 ? commonActors.join(", ") : "None"}
+              </p>
+              <ul className="space-y-2">
+                {compareMovies.map((movie, i) => (
+                  <li key={movie.imdbID} className="text-sm">
+                    <span className="font-bold text-gray-100">
+                      {movie.Title}:
+                    </span>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      {uniqueActorsMap[i].length > 0 ? (
+                        uniqueActorsMap[i].map((actor, idx) => (
+                          <span key={idx} className=" text-pink-300 ">
+                            {actor}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400 italic">None</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </InfoSection>
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <InfoSection title="🏆 Awards & Release">
+              <ul className="space-y-3">
+                {compareMovies.map((movie) => (
+                  <li key={movie.imdbID}>
+                    <span className="font-bold text-gray-100">
+                      {movie.Title}
+                    </span>{" "}
+                    ({movie.Year})
+                    <p className="text-sm text-amber-300/80 mt-1 pl-2 border-l-2 border-amber-500/30">
+                      {movie.Awards}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </InfoSection>
+          </motion.div>
+        </div>
+
+        <motion.div variants={itemVariants} className="pt-5">
+          <InfoSection title="📊 Ratings from All Sources">
+            <div className="space-y-8 pt-4">
               {compareMovies.map((movie) => (
-                <li key={movie.imdbID}>
-                  <span className="font-bold text-gray-100">{movie.Title}</span>{" "}
-                  ({movie.Year})
-                  <p className="text-sm text-amber-300/80 mt-1 pl-2 border-l-2 border-amber-500/30">
-                    {movie.Awards}
-                  </p>
-                </li>
+                <SourceRatingsChart key={movie.imdbID} movie={movie} />
               ))}
-            </ul>
+            </div>
           </InfoSection>
         </motion.div>
       </div>
-
-      <motion.div variants={itemVariants}>
-        <InfoSection title="📊 Ratings from All Sources">
-          <div className="space-y-8">
-            {compareMovies.map((movie) => (
-              <SourceRatingsChart key={movie.imdbID} movie={movie} />
-            ))}
-          </div>
-        </InfoSection>
-      </motion.div>
+      <div className="flex justify-end gap-4 p-4 border-t border-gray-700">
+        <button
+          onClick={handleExportAsImage}
+          className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-500 transition-all"
+        >
+          Export as Image
+        </button>
+        <button
+          onClick={handleExportAsPDF}
+          className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-500 transition-all"
+        >
+          Export as PDF
+        </button>
+      </div>
     </motion.div>
   );
 };
@@ -296,6 +351,18 @@ const SourceRatingsChart = ({ movie }: { movie: any }) => {
   return (
     <div>
       <h4 className="text-purple-300 font-bold mb-3 text-lg">{movie.Title}</h4>
+      <div className="flex gap-4 mb-3 flex-wrap text-sm">
+        {Object.entries(sourceColorMap).map(([source, color]) => (
+          <div key={source} className="flex items-center gap-2">
+            <div
+              className="w-4 h-4 rounded-sm"
+              style={{ backgroundColor: color }}
+            ></div>
+            <span className="text-gray-300">{source}</span>
+          </div>
+        ))}
+      </div>
+
       <ResponsiveContainer width="100%" height={chartData.length * 50}>
         <BarChart
           data={chartData}

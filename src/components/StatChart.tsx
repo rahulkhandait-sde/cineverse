@@ -33,6 +33,7 @@ const StatChart = ({
   barColor,
   domain,
   tickFormatter,
+  legendLabel,
 }: {
   title: string;
   dataKey: string;
@@ -40,9 +41,21 @@ const StatChart = ({
   barColor: string;
   domain?: [number, number];
   tickFormatter?: (value: number) => string;
+  legendLabel?: string; 
 }) => (
+
   <div className="bg-gray-800/20 p-4 rounded-xl border border-gray-700/50">
     <h3 className="text-lg font-semibold text-gray-100 mb-4 ml-2">{title}</h3>
+    {legendLabel && (
+      <div className="mb-2 flex items-center gap-2 text-sm">
+        <div
+          className="w-4 h-4 rounded-sm"
+          style={{ backgroundColor: barColor }}
+        ></div>
+        <span className="text-gray-300">{legendLabel}</span>
+      </div>
+    )}
+
     <ResponsiveContainer width="100%" height={250}>
       <BarChart
         data={data}

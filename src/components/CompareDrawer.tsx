@@ -11,6 +11,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronUp, Trash2, GitCompare, X } from "lucide-react";
 import { setLoading, setError } from "@/store/movieSlice";
+
 export function CompareDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
