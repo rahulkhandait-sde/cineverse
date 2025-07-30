@@ -21,8 +21,10 @@
     "next": "15.3.4",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
+    "recharts": "^3.1.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.17"
   },

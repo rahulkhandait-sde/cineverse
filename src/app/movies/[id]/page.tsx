@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +9,7 @@ import {
 	setLoading,
 	setError,
 } from "../../../store/movieSlice";
+import { addMovieToCompare } from "@/store/compareMovieSlice";
 import { movieApi } from "../../../services/movieApi";
 import { Header } from "../../../components/Header";
 import { Button } from "../../../components/ui/Button";
@@ -32,7 +32,9 @@ export default function MovieDetailsPage() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const movieId = params.id as string;
-
+	const compareMovies = useSelector (
+		(state:RootState) => state.compare.compareMovies
+	);
 	const { movieDetails, loading, error } = useSelector(
 		(state: RootState) => state.movies
 	);
@@ -54,6 +56,7 @@ export default function MovieDetailsPage() {
 				const details = await movieApi.getMovieDetails(movieId);
 				if (details.Response === "True") {
 					dispatch(setMovieDetails({ id: movieId, details }));
+					console.log(details);
 				} else {
 					dispatch(setError("Movie not found"));
 				}
@@ -90,7 +93,23 @@ export default function MovieDetailsPage() {
 		updatedRatings.push(newRating);
 		setUserRatings(updatedRatings);
 	};
-
+	const handleAddMovie =async () =>{
+		dispatch(setLoading(true));
+		dispatch(setError(null));
+		try {
+			const details = await movieApi.getMovieDetails(movieId);
+			if (details.Response === "True") {
+				dispatch(addMovieToCompare(details));
+			} else {
+				dispatch(setError("Movie not found"));
+			}
+		} catch {
+			dispatch(setError("Failed to fetch movie details"));
+		} finally {
+			dispatch(setLoading(false));
+			}
+		}
+	
 	if (loading) {
 		return (
 			<div className='min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-900 relative overflow-hidden'>
@@ -184,7 +203,19 @@ export default function MovieDetailsPage() {
 						Back to Premium Collection
 					</Button>
 				</motion.div>
-
+					<motion.div
+						initial={{ opacity: 0, x: 20 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.1 }}
+						className="mb-8"
+						>
+						<Button
+							onClick={handleAddMovie}
+							className="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-300"
+						>
+							➕ Add to Compare
+						</Button>
+					</motion.div>
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -417,6 +448,7 @@ export default function MovieDetailsPage() {
 					</div>
 				</motion.div>
 			</main>
+			
 		</div>
 	);
 }
