@@ -571,3 +571,14 @@ select.premium-select option {
 		font-size: 16px !important;
 	}
 }
+.export-clean {
+  background: white !important;
+  color: black !important;
+}
+
+.export-clean * {
+  background: transparent !important;
+  color: black !important;
+  box-shadow: none !important;
+  border-color: black !important;
+}
