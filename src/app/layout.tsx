@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import  {CompareDrawer} from "@/components/CompareDrawer"
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -124,6 +126,7 @@ export default function RootLayout({
 					<CompareDrawer />
 				</div>
 					{children}
+					<ScrollToTopButton />
 				</Providers>
 			</body>
 		</html>
