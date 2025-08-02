@@ -125,7 +125,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 			},
 		}));
 
-		// Close suggestions when clicking outside
+		
 		useEffect(() => {
 			function handleClickOutside(event: MouseEvent) {
 				if (
@@ -460,8 +460,13 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 								animate={{ opacity: 1, y: 0, scale: 1 }}
 								exit={{ opacity: 0, y: 10, scale: 0.95 }}
 								transition={{ duration: 0.2 }}
+
+								className='absolute top-full left-0 right-0 mt-4 z-50'>
+								<div className='bg-white/95 dark:bg-black/80 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden'>
+
 								className='absolute top-full left-0 right-0 mt-2 sm:mt-4 z-50 mx-2 sm:mx-0'>
 								<div className='bg-white/95 dark:bg-black/80 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden'>
+
 									{/* Search History Section */}
 									{(() => {
 										const searchSuggestions = getSearchSuggestions(value);
@@ -471,6 +476,15 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 
 										return showHistory ? (
 											<>
+
+												<div className='px-6 py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-indigo-500/5'>
+													<div className='flex items-center justify-between'>
+														<div className='flex items-center gap-3'>
+															<div className='w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center'>
+																<Clock className='w-4 h-4 text-white' />
+															</div>
+															<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+
 												<div className='px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-indigo-500/5'>
 													<div className='flex items-center justify-between'>
 														<div className='flex items-center gap-2 sm:gap-3'>
@@ -478,6 +492,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 																<Clock className='w-3 h-3 sm:w-4 sm:h-4 text-white' />
 															</div>
 															<h3 className='text-base sm:text-lg font-bold text-gray-900 dark:text-white'>
+
 																{value.trim() ? 'Search Suggestions' : 'Recent Searches'}
 															</h3>
 														</div>
@@ -497,15 +512,24 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 													</p>
 												</div>
 
+
+												<div className='p-4 max-h-60 overflow-y-auto'>
+													<div className='space-y-2'>
+
 												<div className='p-3 sm:p-4 max-h-60 overflow-y-auto'>
 													<div className='space-y-1 sm:space-y-2'>
+
 														{displayItems.map((item: any, index: number) => (
 															<motion.div
 																key={`${item.query}-${item.timestamp}`}
 																initial={{ opacity: 0, x: -20 }}
 																animate={{ opacity: 1, x: 0 }}
 																transition={{ delay: index * 0.05 }}
+
+																className='group flex items-center justify-between p-3 hover:bg-gray-100/70 dark:hover:bg-white/5 rounded-lg transition-all duration-200'>
+
 																className='group flex items-center justify-between p-2 sm:p-3 hover:bg-gray-100/70 dark:hover:bg-white/5 rounded-lg transition-all duration-200'>
+
 																<motion.button
 																	onClick={() => handleSuggestionClick(item.query)}
 																	className='flex items-center gap-3 flex-1 text-left'
@@ -544,12 +568,21 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 									{(!value.trim() || !hasHistory) && (
 										<>
 											{hasHistory && <div className='border-t border-gray-200/50 dark:border-white/10' />}
+
+											<div className='px-6 py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-red-500/5 via-purple-500/5 to-blue-500/5'>
+												<div className='flex items-center gap-3'>
+													<div className='w-8 h-8 bg-gradient-to-r from-red-500 to-purple-500 rounded-full flex items-center justify-center'>
+														<TrendingUp className='w-4 h-4 text-white' />
+													</div>
+													<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+
 											<div className='px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200/50 dark:border-white/10 bg-gradient-to-r from-red-500/5 via-purple-500/5 to-blue-500/5'>
 												<div className='flex items-center gap-2 sm:gap-3'>
 													<div className='w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-red-500 to-purple-500 rounded-full flex items-center justify-center'>
 														<TrendingUp className='w-3 h-3 sm:w-4 sm:h-4 text-white' />
 													</div>
 													<h3 className='text-base sm:text-lg font-bold text-gray-900 dark:text-white'>
+
 														Trending Searches
 													</h3>
 												</div>
@@ -558,13 +591,22 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 												</p>
 											</div>
 
+
+											<div className='p-6'>
+												<div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+
 											<div className='p-4 sm:p-6'>
 												<div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3'>
+
 													{popularSearches.map((search: any, index: number) => (
 														<motion.button
 															key={search.text}
 															onClick={() => handleSuggestionClick(search.text)}
+
+															className={`group relative p-4 bg-gradient-to-r ${search.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
+
 															className={`group relative p-3 sm:p-4 bg-gradient-to-r ${search.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-lg sm:rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
+
 															whileHover={{ scale: 1.02, y: -2 }}
 															whileTap={{ scale: 0.98 }}
 															initial={{ opacity: 0, y: 20 }}
