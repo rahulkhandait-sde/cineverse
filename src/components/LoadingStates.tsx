@@ -444,7 +444,23 @@ export const EmptyState: React.FC<{
 							<span className='font-semibold'>Unlimited Access</span>
 						</div>
 					</motion.div>
-				</div>
+					</div>
+				<motion.p
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 1.5 }}
+  className="text-center max-w-lg mx-auto text-sm leading-relaxed py-4"
+  >
+  <span className="block text-gray-500 dark:text-gray-400 mb-1">
+  </span>
+  <span className="block font-semibold">
+    <span className="text-pink-500">&copy; 2025 </span>
+    <span className="text-blue-500">CineVerse.</span>
+    <span className="text-yellow-600"> Made with </span>
+    <span className="text-red-500">❤️</span>
+    <span className="text-green-500"> to enhance your movie experience.</span>
+  </span>
+</motion.p>
 			</motion.div>
 		);
 	}
