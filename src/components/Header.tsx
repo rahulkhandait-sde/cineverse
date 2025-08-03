@@ -172,19 +172,21 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                     
                     {/* User Profile - Responsive */}
                     <motion.div whileHover={{ scale: 1.05 }} className='hidden sm:block relative group'>
-                        <motion.button 
-                            whileTap={{ scale: 0.95 }} 
-                            className='flex items-center gap-2 md:gap-3 p-1.5 sm:p-2 pr-2 sm:pr-3 md:pr-4 bg-gradient-to-r from-red-600/20 to-purple-600/20 hover:from-red-600/30 hover:to-purple-600/30 backdrop-blur-sm border border-red-500/30 dark:border-white/20 hover:border-red-500/40 dark:hover:border-white/30 rounded-lg md:rounded-xl transition-all duration-300 shadow-lg'
-                        >
-                            <div className='relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-gradient-to-br from-red-500 to-purple-600 rounded-md sm:rounded-lg flex items-center justify-center overflow-hidden'>
-                                <User className='h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white' />
-                                <div className='absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-green-400 border-1 sm:border-2 border-white dark:border-black rounded-full'></div>
-                            </div>
-                            <div className='hidden md:block text-left'>
-                                <div className='text-gray-900 dark:text-white/90 font-semibold text-sm'>Profile</div>
-                                <div className='text-gray-600 dark:text-white/60 text-xs'>Premium User</div>
-                            </div>
-                        </motion.button>
+                       <Link href="/profile">
+                            <motion.button 
+                                whileTap={{ scale: 0.95 }} 
+                                className='flex items-center gap-2 md:gap-3 p-1.5 sm:p-2 pr-2 sm:pr-3 md:pr-4 bg-gradient-to-r from-red-600/20 to-purple-600/20 hover:from-red-600/30 hover:to-purple-600/30 backdrop-blur-sm border border-red-500/30 dark:border-white/20 hover:border-red-500/40 dark:hover:border-white/30 rounded-lg md:rounded-xl transition-all duration-300 shadow-lg'
+                                >
+                                <div className='relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-gradient-to-br from-red-500 to-purple-600 rounded-md sm:rounded-lg flex items-center justify-center overflow-hidden'>
+                                    <User className='h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white' />
+                                    <div className='absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-green-400 border-1 sm:border-2 border-white dark:border-black rounded-full'></div>
+                                </div>
+                                <div className='hidden md:block text-left'>
+                                    <div className='text-gray-900 dark:text-white/90 font-semibold text-sm'>Profile</div>
+                                    <div className='text-gray-600 dark:text-white/60 text-xs'>Premium User</div>
+                                </div>
+                            </motion.button>
+                        </Link>
                         <div className='absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-400 dark:border-t-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                     </motion.div>
                     
@@ -288,22 +290,25 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                                 </div>
 
                                 {/* Mobile User Profile */}
-                                <motion.button 
-                                    whileTap={{ scale: 0.95 }}
-                                    className='flex items-center gap-2 p-1.5 sm:p-2 bg-gradient-to-r from-red-600/20 to-purple-600/20 backdrop-blur-sm border border-red-500/30 dark:border-white/20 rounded-lg touch-target'
-                                >
-                                    <div className='relative w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-red-500 to-purple-600 rounded-lg flex items-center justify-center'>
-                                        <User className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-white' />
-                                        <div className='absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-400 border-2 border-white dark:border-black rounded-full'></div>
-                                    </div>
-                                    <div className='text-left'>
-                                        <div className='text-gray-900 dark:text-white/90 font-semibold text-xs sm:text-sm'>Profile</div>
-                                    </div>
-                                </motion.button>
+                                <Link href="/profile">
+                                    <motion.button 
+                                        whileTap={{ scale: 0.95 }}
+                                        className='flex items-center gap-2 p-1.5 sm:p-2 bg-gradient-to-r from-red-600/20 to-purple-600/20 backdrop-blur-sm border border-red-500/30 dark:border-white/20 rounded-lg touch-target'
+                                    >
+                                        <div className='relative w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-red-500 to-purple-600 rounded-lg flex items-center justify-center'>
+                                            <User className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-white' />
+                                            <div className='absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-400 border-2 border-white dark:border-black rounded-full'></div>
+                                        </div>
+                                        <div className='text-left'>
+                                            <div className='text-gray-900 dark:text-white/90 font-semibold text-xs sm:text-sm'>Profile</div>
+                                        </div>
+                                    </motion.button>
+                                </Link>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
             )}
         </AnimatePresence>
         </>

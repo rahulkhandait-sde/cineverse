@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { motion } from "framer-motion";
 import { Movie } from "../types/movie";
 import { RootState } from "../store/store";
@@ -49,13 +49,17 @@ export const WatchlistButton: React.FC<WatchlistButtonProps> = ({
 			onClick={handleToggleWatchlist}
 			whileHover={{ scale: 1.1 }}
 			whileTap={{ scale: 0.9 }}
-			className={`${sizeClass} ${className} relative flex items-center justify-center rounded-full transition-all duration-300 ${
-				isInWatchlist
-					? "bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg hover:shadow-xl"
-					: "bg-white/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 border border-gray-200 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-600"
-			} backdrop-blur-sm`}
+			className={`
+				${sizeClass} ${className} 
+				relative flex items-center justify-center 
+				rounded-full transition-all duration-300 
+				${
+					isInWatchlist
+						? "bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg hover:shadow-xl"
+						: "bg-white/10 backdrop-blur-xl border border-white/20 hover:border-red-400"
+				}`}
 			aria-label={
-				isInWatchlist ? "Remove from watchlist" : "Add to watchlist"
+				isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"
 			}
 		>
 			<motion.div
@@ -66,11 +70,11 @@ export const WatchlistButton: React.FC<WatchlistButtonProps> = ({
 				}}
 				transition={{ duration: 0.3 }}
 			>
-				{isInWatchlist ? (
-					<BookmarkCheck className="w-5 h-5" />
-				) : (
-					<Bookmark className="w-5 h-5" />
-				)}
+				<Bookmark
+					className={`w-5 h-5 ${
+						isInWatchlist ? "text-white" : "text-red-500"
+					}`}
+				/>
 			</motion.div>
 
 			{/* Ripple effect */}
@@ -85,4 +89,4 @@ export const WatchlistButton: React.FC<WatchlistButtonProps> = ({
 			/>
 		</motion.button>
 	);
-}; 
+};
