@@ -167,7 +167,7 @@ export default function MovieDetailsPage() {
 								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}>
 								<Button
-									onClick={() => router.push("/movies")}
+									onClick={() => router.push("tv-shows")}
 									className='premium-button px-8 py-4 text-white font-bold text-lg rounded-2xl shadow-2xl'>
 									<ArrowLeft className='w-5 h-5 mr-3' />
 									Back to Premium Collection
@@ -197,7 +197,7 @@ export default function MovieDetailsPage() {
 					transition={{ duration: 0.3 }}>
 					<Button
 						variant='outline'
-						onClick={() => router.push("/movies")}
+						onClick={() => router.push("/tv-shows")}
 						className='mb-8 bg-white/40 dark:bg-black/40 border-gray-300/50 dark:border-white/20 text-gray-900 dark:text-white hover:bg-white/60 dark:hover:bg-black/60 hover:border-gray-400/50 dark:hover:border-white/30 backdrop-blur-sm'>
 						<ArrowLeft className='w-4 h-4 mr-2' />
 						Back to Premium Collection
