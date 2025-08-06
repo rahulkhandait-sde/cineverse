@@ -168,3 +168,5 @@ export const useMoviesWithGenreFilter = (movies: Movie[], genre?: string) => {
 
 	return { filteredMovies, isFiltering };
 };
+
+
