@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                         <div className='absolute inset-0 rounded-md sm:rounded-lg md:rounded-xl border-2 border-red-500/30 animate-pulse'></div>
                     </div>
                     <div className='flex flex-col min-w-0'>
-                        <motion.h1 whileHover={{ scale: 1.05 }} className='text-base sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black bg-gradient-to-r from-gray-900 via-red-600 to-purple-600 dark:from-white dark:via-red-200 dark:to-purple-200 bg-clip-text text-transparent tracking-tight truncate'>
+                        <motion.h1  className='text-base sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl font-black bg-gradient-to-r from-gray-900 via-red-600 to-purple-600 dark:from-white dark:via-red-200 dark:to-purple-200 bg-clip-text text-transparent tracking-tight truncate'>
                             CineVerse
                         </motion.h1>
                         <motion.p initial={{ opacity: 0.6 }} whileHover={{ opacity: 1 }} className='hidden sm:flex items-center gap-1 text-xs text-red-600 dark:text-red-400 font-semibold -mt-1 tracking-[0.2em] uppercase'>
