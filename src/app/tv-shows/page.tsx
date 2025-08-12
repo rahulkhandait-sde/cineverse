@@ -7,6 +7,7 @@ import { movieApi } from "../../services/movieApi";
 import { Movie } from "../../types/movie";
 import { MovieCard } from "../../components/MovieCard";
 import { motion } from "framer-motion";
+import { MovieCardSkeletonGrid } from "@/components/skeletons/MovieCardSkeleton";
 // ==========================================================
 // == 1. IMPORT YOUR HEADER COMPONENT
 // ==========================================================
@@ -69,9 +70,10 @@ const TVShowsPage = () => {
                 </div>
 
                 <div className="mt-10">
-                    {isLoading && <p className="text-center text-lg">Loading...</p>}
                     {error && <p className="text-center text-red-500">{error}</p>}
-                    {!isLoading && !error && (
+                    {isLoading ? (
+                        <MovieCardSkeletonGrid count={10} />
+                    ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
                             {shows.map((show, index) => (
                                 <MovieCard key={show.imdbID} movie={show} index={index} />

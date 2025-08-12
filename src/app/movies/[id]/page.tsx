@@ -26,6 +26,7 @@ import {
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useLocalStorage } from "../../../hooks/useDebounce";
+import { LoadingSkeleton } from "@/components/LoadingStates";
 
 export default function MovieDetailsPage() {
 	const params = useParams();
@@ -112,30 +113,7 @@ export default function MovieDetailsPage() {
 	
 	if (loading) {
 		return (
-			<div className='min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-900 relative overflow-hidden'>
-				{/* Background Pattern */}
-				<div className='absolute inset-0 opacity-10 dark:opacity-5'>
-					<div className='absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_80%,_rgba(120,119,198,0.3),_transparent_50%)]'></div>
-					<div className='absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_20%,_rgba(255,119,198,0.3),_transparent_50%)]'></div>
-				</div>
-				<Header />
-				<div className='container mx-auto px-4 py-8 pt-32'>
-					<div className='flex justify-center items-center min-h-[60vh]'>
-						<div className='premium-section rounded-3xl p-12 text-center'>
-							<motion.div
-								animate={{ rotate: 360 }}
-								transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-								className='w-16 h-16 mx-auto mb-6 border-4 border-red-500/30 border-t-red-500 rounded-full'></motion.div>
-							<h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
-								Loading Premium Content...
-							</h2>
-							<p className='text-gray-600 dark:text-gray-400'>
-								Preparing your cinematic experience
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
+			<LoadingSkeleton type="details" />
 		);
 	}
 
