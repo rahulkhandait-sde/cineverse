@@ -184,14 +184,14 @@ export default function MoviesPage() {
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 1, delay: 0.2 }}
                             className='mb-8'>
-                            <h1 className='text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black mb-8 leading-tight'>
-                                <span className='block bg-gradient-to-r from-gray-900 via-red-600 to-purple-600 dark:from-white dark:via-red-200 dark:to-purple-200 bg-clip-text text-transparent text-glow'>
+                            <h1 className='text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black mb-8 leading-tight drop-shadow-xl transform transition-transform duration-100 hover:rotate-2 hover:scale-105'>
+                                <span className=' block bg-gradient-to-r from-[#f83f3f] via-[#f40a64] to-[#480000] dark:from-[#ff0606] dark:to-[#2600ff] bg-clip-text text-transparent '>
                                     Discover
                                 </span>
-                                <span className='block text-5xl md:text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-clip-text text-transparent mt-4'>
+                                <span className='block text-5xl md:text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-[#f83f3f] via-[#f40a64] to-[#480000] dark:from-[#ff19e8] dark:via-purple-500 dark:to-[#ff19e8] bg-clip-text text-transparent '>
                                     Cinematic
                                     <br />
-                                    <span className='bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 bg-clip-text text-transparent'>
+                                    <span className='bg-gradient-to-r from-[#ef1717] via-[#f40a64] to-[#480000] dark:from-[#8157ff] dark:to-[#ff1934] bg-clip-text text-transparent'>
                                         Universes
                                     </span>
                                 </span>

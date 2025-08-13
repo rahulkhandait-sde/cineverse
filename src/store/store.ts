@@ -1,8 +1,11 @@
+import compareMovieReducer from "./compareMovieSlice";
+import { loadState, saveState } from "@/lib/localStorageUtils";
 import { configureStore } from "@reduxjs/toolkit";
 import movieReducer from "./movieSlice";
 import watchlistReducer from "./watchlistSlice";
-import compareMovieReducer from "./compareMovieSlice";
-import { loadState, saveState } from "@/lib/localStorageUtils";
+import watchedReducer from "./watchedSlice";
+import favoritesReducer from "./favoritesSlice";
+
 
 // Load initial compare state from local storage
 const preloadedState = {
@@ -15,6 +18,8 @@ export const store = configureStore({
     movies: movieReducer,
     watchlist: watchlistReducer,
     compare: compareMovieReducer,
+    favorites: favoritesReducer,
+    watched: watchedReducer,
   },
   preloadedState,
 });

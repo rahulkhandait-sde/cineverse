@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import  {CompareDrawer} from "@/components/CompareDrawer"
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -98,11 +99,7 @@ export const viewport = {
 	],
 };
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en' suppressHydrationWarning>
 			<head>
@@ -119,16 +116,19 @@ export default function RootLayout({
 					}}
 				/>
 			</head>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<Providers>
-				<div className="fixed bottom-6 right-6 z-50">
-					<CompareDrawer />
-				</div>
+					<div className="fixed bottom-6 right-6 z-50">
+						<CompareDrawer />
+					</div>
+
 					{children}
+
+					<Footer /> 
 					<ScrollToTopButton />
 				</Providers>
 			</body>
 		</html>
 	);
 }
+

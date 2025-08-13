@@ -5,6 +5,8 @@ import { Movie } from "../types/movie";
 import { Card, CardContent } from "./ui/Card";
 import { StarRating } from "./ui/StarRating";
 import { WatchlistButton } from "./WatchlistButton";
+import { WatchedButton } from "./watchedButton";
+import { FavoritesButton } from "./favoritesButton";
 import { Calendar, Film, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -180,6 +182,8 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 					{/* Watchlist button */}
 					<div className='absolute top-3 left-3'>
 						<WatchlistButton movie={movie} size="sm" />
+						<WatchedButton movie={movie} size="sm" />
+						<FavoritesButton movie={movie} size="sm" />
 					</div>
 
 					{/* Enhanced Loading Overlay */}
