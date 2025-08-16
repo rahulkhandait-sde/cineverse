@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation"; // To read URL genre paramete
 import { Header } from "../../components/Header";
 import { SearchBar, SearchBarRef } from "../../components/SearchBar";
 import { MovieGrid } from "../../components/MovieGrid";
+import { ActorGrid } from "../../components/ActorGrid";
 import {
     LoadingSkeleton,
     ErrorState,
@@ -16,9 +17,10 @@ import {
     useInfiniteMovieSearch,
     useMoviesWithGenreFilter,
 } from "../../hooks/useMovieQueries"; // Your custom hooks
+import { useCombinedSearch, useInfiniteMoviesByActor } from "../../hooks/useActorQueries";
 import { useDebounce } from "../../hooks/useDebounce";
 import { motion, AnimatePresence } from "framer-motion";
-import { Tag } from "lucide-react";
+import { Tag, User } from "lucide-react";
 
 // Assuming movieGenres is defined as in your SearchBar component, or imported
 const movieGenres = [
@@ -51,6 +53,7 @@ export default function MoviesPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [year, setYear] = useState("");
     const [genre, setGenre] = useState("all"); // Default to 'all'
+    const [searchType, setSearchType] = useState<'movie' | 'actor' | 'both'>('both');
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const searchBarRef = useRef<SearchBarRef>(null);
@@ -77,26 +80,74 @@ export default function MoviesPage() {
     // Debounce the search query for efficient API calls
     const debouncedQuery = useDebounce(searchQuery, 500);
 
-    // Main data fetching logic using useInfiniteMovieSearch
+    // Auto-detect actor searches and adjust search type
+    useEffect(() => {
+        if (debouncedQuery.trim()) {
+            const isActorSearchQuery = /^(movies?|films?)\s+by\s+/i.test(debouncedQuery) || 
+                                     /^(actor|actress)\s+/i.test(debouncedQuery) ||
+                                     debouncedQuery.toLowerCase().includes('by');
+            
+            if (isActorSearchQuery && searchType !== 'actor') {
+                console.log(`🎭 Auto-detected actor search: "${debouncedQuery}"`);
+                setSearchType('actor');
+            }
+        }
+    }, [debouncedQuery, searchType]);
+
+    // Combined search logic for both movies and actors
     const {
-        data,
-        isLoading,
-        error,
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-        refetch, // Use refetch to trigger a new search
-    } = useInfiniteMovieSearch(
-        debouncedQuery, // Query based on debounced search input
-        year // Year filter
-        // If your API or useInfiniteMovieSearch supports genre at the API level, pass it here.
-        // Otherwise, rely on client-side filtering below.
+        movies: movieData,
+        actors: actorData,
+        isLoading: isCombinedLoading,
+        error: combinedError,
+        isFetching: isCombinedFetching,
+    } = useCombinedSearch(debouncedQuery, searchType);
+
+    // Actor-specific search for movies by actor
+    const {
+        data: actorMoviesData,
+        isLoading: isActorMoviesLoading,
+        error: actorMoviesError,
+        fetchNextPage: fetchNextActorMovies,
+        hasNextPage: hasNextActorMovies,
+        isFetchingNextPage: isFetchingNextActorMovies,
+    } = useInfiniteMoviesByActor(
+        searchType === 'actor' ? debouncedQuery : ''
     );
+
+    // Determine which data to use based on search type
+    const isActorSearch = searchType === 'actor' && debouncedQuery.trim();
+    const isMovieSearch = searchType === 'movie' || searchType === 'both';
+    
+    // Debug logging
+    console.log(`🔍 Search Debug:`, {
+        searchQuery,
+        debouncedQuery,
+        searchType,
+        isActorSearch,
+        isMovieSearch
+    });
+    
+    // Use actor movies data if searching for actors, otherwise use combined search
+    const data = isActorSearch ? actorMoviesData : undefined;
+    const isLoading = isActorSearch ? isActorMoviesLoading : isCombinedLoading;
+    const error = isActorSearch ? actorMoviesError : combinedError;
+    const fetchNextPage = isActorSearch ? fetchNextActorMovies : undefined;
+    const hasNextPage = isActorSearch ? hasNextActorMovies : undefined;
+    const isFetchingNextPage = isActorSearch ? isFetchingNextActorMovies : undefined;
+    const refetch = () => {
+        // Refetch logic would need to be implemented based on the specific query
+        window.location.reload();
+    };
 
     // Flatten all pages into a single array of movies (memoized)
     const allMovies = useMemo(() => {
-        return data?.pages.flatMap((page) => page.Search || []) || [];
-    }, [data]);
+        if (isActorSearch) {
+            return data?.pages.flatMap((page) => page.Search || []) || [];
+        } else {
+            return movieData?.Search || [];
+        }
+    }, [data, movieData, isActorSearch]);
 
     // Apply client-side genre filtering on the fetched movies
     const { filteredMovies, isFiltering } = useMoviesWithGenreFilter(
@@ -135,19 +186,23 @@ export default function MoviesPage() {
         setSearchQuery(""); // Clear search input
         setYear("");        // Clear year filter
         setGenre("all");    // Reset genre filter
+        setSearchType("both"); // Reset search type
         refetch(); // Trigger a refetch to clear previous search results
         searchBarRef.current?.focus(); // Focus the search bar
     };
 
     // Handler for suggested clicks from EmptyState.
-    const handleSuggestionClick = (suggestion: string) => {
+    const handleSuggestionClick = (suggestion: string, type?: 'movie' | 'actor') => {
         setSearchQuery(suggestion);
         setYear("");
         setGenre("all"); // Clear filters when a suggestion is clicked
+        if (type) {
+            setSearchType(type);
+        }
         setToastMessage(`🎬 Searching for "${suggestion}"...`);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
-        // `debouncedQuery` will pick this up and `useInfiniteMovieSearch` will trigger.
+        // `debouncedQuery` will pick this up and the appropriate search will trigger.
     };
 
     return (
@@ -246,11 +301,13 @@ export default function MoviesPage() {
                             ref={searchBarRef}
                             value={searchQuery}
                             onChange={setSearchQuery}
-                            placeholder='Search for movies, TV series, episodes...'
+                            placeholder='Search for movies, TV series, episodes, or actors...'
                             year={year}
                             genre={genre}
+                            searchType={searchType}
                             onYearChange={setYear}
                             onGenreChange={setGenre}
+                            onSearchTypeChange={setSearchType}
                             onClearFilters={handleClearFilters}
                         />
                     </motion.div>
@@ -283,9 +340,20 @@ export default function MoviesPage() {
                                                 <div className='absolute inset-0 w-3 h-3 bg-red-500/30 rounded-full animate-ping'></div>
                                             </div>
                                             <span className='font-semibold'>
-                                                {moviesToDisplay.length} of {totalResults} results
+                                                {moviesToDisplay.length} movies of {totalResults} results
                                             </span>
                                         </div>
+                                        {actorData && actorData.length > 0 && searchType !== 'movie' && (
+                                            <div className='flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300'>
+                                                <div className='relative'>
+                                                    <div className='w-3 h-3 bg-purple-500 rounded-full animate-pulse shadow-lg shadow-purple-500/50'></div>
+                                                    <div className='absolute inset-0 w-3 h-3 bg-purple-500/30 rounded-full animate-ping'></div>
+                                                </div>
+                                                <span className='font-semibold'>
+                                                    {actorData.length} actors found
+                                                </span>
+                                            </div>
+                                        )}
                                         {/* Display current search query if active */}
                                         {(searchQuery.trim() || urlGenreParam) && (
                                              <div className='px-6 py-3 bg-gradient-to-r from-red-500/30 to-purple-500/30 backdrop-blur-sm text-red-600 dark:text-red-300 rounded-full text-sm font-bold border border-red-500/40 shadow-lg'>
@@ -341,7 +409,44 @@ export default function MoviesPage() {
                                     </motion.div>
                                 )}
 
-                                <MovieGrid movies={moviesToDisplay} />
+                                {/* Display Movies */}
+                                {moviesToDisplay.length > 0 && (
+                                    <MovieGrid movies={moviesToDisplay} />
+                                )}
+
+                                {/* Display Actors */}
+                                {actorData && actorData.length > 0 && searchType !== 'movie' && (
+                                    <div className="mt-12">
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="mb-8 flex items-center gap-4 p-6 bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-2xl shadow-2xl">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                                                    <User className="w-4 h-4 text-white" />
+                                                </div>
+                                                <div>
+                                                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                                                        Actors Found
+                                                    </h2>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                        {actorData.length} actors matching your search
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                        <ActorGrid 
+                                            actors={actorData} 
+                                            onActorClick={(actor) => {
+                                                setSearchQuery(actor.name);
+                                                setSearchType('actor');
+                                                setToastMessage(`🎭 Searching for movies by ${actor.name}...`);
+                                                setShowToast(true);
+                                                setTimeout(() => setShowToast(false), 3000);
+                                            }}
+                                        />
+                                    </div>
+                                )}
 
                                 {/* Load More Button */}
                                 {/* Only show load more if not currently filtering by genre (as pagination breaks with client-side filtering) */}

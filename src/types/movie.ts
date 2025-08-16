@@ -48,3 +48,23 @@ export interface UserRating {
 	movieId: string;
 	rating: number;
 }
+
+// Actor-related types
+export interface Actor {
+	name: string;
+	movies: string[];
+	genres: string[];
+	birthYear: number;
+	nationality: string;
+}
+
+export interface ActorSearchResult {
+	actor: Actor;
+	matchedMovies: Movie[];
+	totalMovies: number;
+}
+
+export interface SearchType {
+	type: 'movie' | 'actor';
+	query: string;
+}
