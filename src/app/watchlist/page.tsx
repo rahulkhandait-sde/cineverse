@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { clearWatchlist } from "../../store/watchlistSlice";
@@ -12,9 +12,15 @@ import { Button } from "../../components/ui/Button";
 
 export default function WatchlistPage() {
 	const dispatch = useDispatch();
+	const [isHydrated, setIsHydrated] = useState(false);
 	const watchlistMovies = useSelector(
 		(state: RootState) => state.watchlist.movies
 	);
+
+	// Handle hydration to prevent mismatches
+	useEffect(() => {
+		setIsHydrated(true);
+	}, []);
 
 	const handleClearWatchlist = () => {
 		if (confirm("Are you sure you want to clear your entire watchlist?")) {
@@ -70,11 +76,11 @@ export default function WatchlistPage() {
 							<div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700">
 								<Film className="w-5 h-5 text-blue-500" />
 								<span className="font-semibold text-gray-700 dark:text-gray-300">
-									{watchlistMovies.length} {watchlistMovies.length === 1 ? "movie" : "movies"}
+									{isHydrated ? watchlistMovies.length : 0} {isHydrated && watchlistMovies.length === 1 ? "movie" : "movies"}
 								</span>
 							</div>
 
-							{watchlistMovies.length > 0 && (
+							{isHydrated && watchlistMovies.length > 0 && (
 								<Button
 									onClick={handleClearWatchlist}
 									variant="destructive"

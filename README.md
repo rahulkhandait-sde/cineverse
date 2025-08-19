@@ -7,7 +7,9 @@ A beautiful and modern movie search application built with Next.js, TypeScript, 
 ### Core Functionality
 
 - **Movie Search**: Search for movies by title with auto-complete and debounced API calls
+- **Actor Search**: Search for actors by name and discover their filmography
 - **Movie Details**: View detailed information including plot, cast, ratings, and more
+- **Actor Details**: View actor information including biography, filmography, and genres
 - **User Ratings**: Rate movies with a 5-star rating system (stored locally)
 - **Dark Mode**: Toggle between light and dark themes with persistence
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
@@ -16,6 +18,8 @@ A beautiful and modern movie search application built with Next.js, TypeScript, 
 
 - **`/movies`** - Movie list page with search functionality
 - **`/movies/[id]`** - Individual movie details page
+- **`/actors`** - Actor search and discovery page
+- **`/actors/[name]`** - Individual actor details page
 
 ### UI/UX Features
 
@@ -75,6 +79,13 @@ npm run dev
 3. Results will appear automatically as you type (debounced)
 4. Click on any movie card to view detailed information
 
+### Searching for Actors
+
+1. Navigate to the Actors page or use the search bar with "Actors Only" filter
+2. Search for actors by name or browse popular actors
+3. Click on any actor card to view their filmography
+4. Discover movies featuring your favorite actors
+
 ### Rating Movies
 
 1. Go to a movie's detail page
@@ -91,8 +102,11 @@ npm run dev
 ### ✅ Required Features
 
 - [x] Movie search with OMDB API integration
+- [x] Actor search with comprehensive actor database
 - [x] Movie listing page (`/movies`)
 - [x] Movie details page (`/movies/:id`)
+- [x] Actor listing page (`/actors`)
+- [x] Actor details page (`/actors/:name`)
 - [x] Debounced search functionality
 - [x] Star rating system with local storage
 - [x] Dark mode toggle with persistence
@@ -175,6 +189,9 @@ npm run lint         # Run ESLint
 - Include trailers and additional media
 - Add advanced filtering options
 - Implement movie comparison features
+- Expand actor database with more performers
+- Add actor awards and accolades information
+- Implement actor collaboration networks
 
 ## 📄 License
 

@@ -32,8 +32,6 @@ const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		if (!mounted) return;
 
-		console.log("Dark mode effect triggered:", darkMode);
-
 		// Save dark mode preference and apply to document
 		localStorage.setItem("darkMode", JSON.stringify(darkMode));
 
@@ -41,18 +39,14 @@ const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({
 		const htmlElement = document.documentElement;
 		if (darkMode) {
 			htmlElement.classList.add("dark");
-			console.log("Added dark class to html element");
 		} else {
 			htmlElement.classList.remove("dark");
-			console.log("Removed dark class from html element");
 		}
-
-		console.log("Current html classes:", htmlElement.className);
 	}, [darkMode, mounted]);
 
-	// Prevent hydration mismatch
+	// Prevent hydration mismatch by not rendering until mounted
 	if (!mounted) {
-		return <>{children}</>;
+		return <div style={{ visibility: 'hidden' }}>{children}</div>;
 	}
 
 	return <>{children}</>;

@@ -21,6 +21,7 @@ import {
     Sparkles,
     Clock,
     Trash2,
+    User,
 } from "lucide-react";
 import { useSearchHistory } from "../hooks/useSearchHistory";
 import { searchHistoryUtils } from "../lib/utils";
@@ -31,9 +32,12 @@ interface SearchBarProps {
     placeholder?: string;
     year: string;
     genre: string;
+    searchType: 'movie' | 'actor' | 'both';
     onYearChange: (year: string) => void;
     onGenreChange: (genre: string) => void;
+    onSearchTypeChange: (type: 'movie' | 'actor' | 'both') => void;
     onClearFilters: () => void;
+    showTrendingSearches?: boolean;
 }
 
 export interface SearchBarRef {
@@ -67,14 +71,23 @@ const movieGenres = [
 ];
 
 const popularSearches = [
-    { text: "Marvel", icon: "⚡", color: "from-red-500 to-orange-500" },
-    { text: "Harry Potter", icon: "⚡", color: "from-purple-500 to-pink-500" },
-    { text: "Star Wars", icon: "⭐", color: "from-blue-500 to-purple-500" },
-    { text: "Batman", icon: "🦇", color: "from-gray-700 to-gray-900" },
-    { text: "Spider-Man", icon: "🕷️", color: "from-red-600 to-blue-600" },
-    { text: "The Avengers", icon: "🛡️", color: "from-green-500 to-blue-500" },
-    { text: "Game of Thrones", icon: "🐉", color: "from-yellow-600 to-red-600" },
-    { text: "Breaking Bad", icon: "⚗️", color: "from-green-600 to-yellow-500" },
+    { text: "Marvel", icon: "⚡", color: "from-red-500 to-orange-500", type: "movie" as const },
+    { text: "Harry Potter", icon: "⚡", color: "from-purple-500 to-pink-500", type: "movie" as const },
+    { text: "Star Wars", icon: "⭐", color: "from-blue-500 to-purple-500", type: "movie" as const },
+    { text: "Batman", icon: "🦇", color: "from-gray-700 to-gray-900", type: "movie" as const },
+    { text: "Spider-Man", icon: "🕷️", color: "from-red-600 to-blue-600", type: "movie" as const },
+    { text: "The Avengers", icon: "🛡️", color: "from-green-500 to-blue-500", type: "movie" as const },
+    { text: "Game of Thrones", icon: "🐉", color: "from-yellow-600 to-red-600", type: "movie" as const },
+    { text: "Breaking Bad", icon: "⚗️", color: "from-green-600 to-yellow-500", type: "movie" as const },
+];
+
+const popularActors = [
+    { text: "Tom Hanks", icon: "🎭", color: "from-blue-500 to-cyan-500", type: "actor" as const },
+    { text: "Leonardo DiCaprio", icon: "🎭", color: "from-green-500 to-emerald-500", type: "actor" as const },
+    { text: "Meryl Streep", icon: "🎭", color: "from-purple-500 to-pink-500", type: "actor" as const },
+    { text: "Brad Pitt", icon: "🎭", color: "from-orange-500 to-red-500", type: "actor" as const },
+    { text: "Scarlett Johansson", icon: "🎭", color: "from-pink-500 to-rose-500", type: "actor" as const },
+    { text: "Robert De Niro", icon: "🎭", color: "from-gray-600 to-gray-800", type: "actor" as const },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -89,15 +102,19 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
             placeholder = "Search for movies, TV series, episodes...",
             year,
             genre,
+            searchType,
             onYearChange,
             onGenreChange,
+            onSearchTypeChange,
             onClearFilters,
+            showTrendingSearches = true,
         },
         ref
     ) {
         const [isFocused, setIsFocused] = useState(false);
         const [showSuggestions, setShowSuggestions] = useState(false);
         const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
+        const [isHydrated, setIsHydrated] = useState(false);
         const inputRef = useRef<HTMLInputElement>(null); // Ref for the actual input element
         const containerRef = useRef<HTMLDivElement>(null); // Ref for the whole search bar container
 
@@ -111,7 +128,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
             hasHistory,
         } = useSearchHistory();
 
-        const hasActiveFilters = year !== "" || genre !== "all";
+        const hasActiveFilters = year !== "" || genre !== "all" || searchType !== "both";
 
         // Expose focus and blur methods to parent components
         useImperativeHandle(ref, () => ({
@@ -131,6 +148,11 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
             },
         }));
 
+        // Handle hydration to prevent mismatches
+        useEffect(() => {
+            setIsHydrated(true);
+        }, []);
+
         useEffect(() => {
             function handleClickOutside(event: MouseEvent) {
                 if (
@@ -147,8 +169,11 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                 document.removeEventListener("mousedown", handleClickOutside);
         }, []);
 
-        const handleSuggestionClick = (suggestion: string) => {
+        const handleSuggestionClick = (suggestion: string, type?: 'movie' | 'actor') => {
             onChange(suggestion);
+            if (type) {
+                onSearchTypeChange(type);
+            }
             addToHistory(suggestion); // Add to search history
             setShowSuggestions(false);
             inputRef.current?.focus(); // Keep focus on input after selecting suggestion
@@ -261,17 +286,24 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
 
                             {/* Search Input */}
                             <div className='flex-1 relative'>
-                                <input
-                                    ref={inputRef}
-                                    type='text'
-                                    value={value}
-                                    onChange={handleInputChange}
-                                    onFocus={handleInputFocus}
-                                    onBlur={handleInputBlur} // Apply onBlur to input itself
-                                    onKeyDown={handleKeyDown}
-                                    placeholder={placeholder}
-                                    className='w-full bg-transparent text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none selection:bg-red-500/20 selection:text-red-900 dark:selection:text-red-100'
-                                />
+                                {isHydrated && (
+                                    <input
+                                        ref={inputRef}
+                                        type='text'
+                                        value={value}
+                                        onChange={handleInputChange}
+                                        onFocus={handleInputFocus}
+                                        onBlur={handleInputBlur} // Apply onBlur to input itself
+                                        onKeyDown={handleKeyDown}
+                                        placeholder={placeholder}
+                                        className='w-full bg-transparent text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none selection:bg-red-500/20 selection:text-red-900 dark:selection:text-red-100'
+                                    />
+                                )}
+                                {!isHydrated && (
+                                    <div className='w-full h-12 bg-transparent text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400'>
+                                        {placeholder}
+                                    </div>
+                                )}
 
                                 {/* Enhanced focus glow */}
                                 {isFocused && (
@@ -304,11 +336,12 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                             </div>
 
                             {/* Enhanced Filter Toggle Button */}
-                            <motion.button
-                                onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                                className='flex-shrink-0 ml-3 sm:ml-4 md:ml-6 p-2 sm:p-3 md:p-4 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-indigo-500/20 dark:from-purple-500/30 dark:via-blue-500/30 dark:to-indigo-500/30 hover:from-purple-500/30 hover:via-blue-500/30 hover:to-indigo-500/30 backdrop-blur-2xl rounded-xl sm:rounded-2xl border border-purple-500/40 dark:border-purple-400/40 transition-all duration-300 group shadow-lg hover:shadow-purple-500/25'
-                                whileHover={{ scale: 1.05, rotate: 3 }}
-                                whileTap={{ scale: 0.95 }}>
+                            {isHydrated && (
+                                <motion.button
+                                    onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
+                                    className='flex-shrink-0 ml-3 sm:ml-4 md:ml-6 p-2 sm:p-3 md:p-4 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-indigo-500/20 dark:from-purple-500/30 dark:via-blue-500/30 dark:to-indigo-500/30 hover:from-purple-500/30 hover:via-blue-500/30 hover:to-indigo-500/30 backdrop-blur-2xl rounded-xl sm:rounded-2xl border border-purple-500/40 dark:border-purple-400/40 transition-all duration-300 group shadow-lg hover:shadow-purple-500/25'
+                                    whileHover={{ scale: 1.05, rotate: 3 }}
+                                    whileTap={{ scale: 0.95 }}>
                                 <div className='relative'>
                                     <Filter className='w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors drop-shadow-sm' />
                                     {hasActiveFilters && (
@@ -324,10 +357,11 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                                         </motion.div>
                                     )}
                                 </div>
-                            </motion.button>
+                                </motion.button>
+                            )}
 
                             {/* Clear Search Button */}
-                            {value && (
+                            {value && isHydrated && (
                                 <motion.button
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -373,7 +407,33 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                                         </div>
 
                                         {/* Filter Controls */}
-                                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'>
+                                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'>
+                                            {/* Search Type Filter */}
+                                            <div className='space-y-2 sm:space-y-3'>
+                                                <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300'>
+                                                    <Search className='w-4 h-4 text-red-500' />
+                                                    Search Type
+                                                </label>
+                                                <div className='relative'>
+                                                    <select
+                                                        value={searchType}
+                                                        onChange={(e) => onSearchTypeChange(e.target.value as 'movie' | 'actor' | 'both')}
+                                                        className='premium-select w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 transition-all duration-300'
+                                                        title="Select search type">
+                                                        <option value='both'>Movies & Actors</option>
+                                                        <option value='movie'>Movies Only</option>
+                                                        <option value='actor'>Actors Only</option>
+                                                    </select>
+                                                    {searchType !== "both" && (
+                                                        <motion.div
+                                                            initial={{ scale: 0 }}
+                                                            animate={{ scale: 1 }}
+                                                            className='absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full'
+                                                        />
+                                                    )}
+                                                </div>
+                                            </div>
+
                                             {/* Year Filter */}
                                             <div className='space-y-2 sm:space-y-3'>
                                                 <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300'>
@@ -438,6 +498,14 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 className='flex flex-wrap gap-3 pt-4 border-t border-gray-200/50 dark:border-white/10'>
+                                                {searchType !== "both" && (
+                                                    <div className='flex items-center gap-2 px-4 py-2 bg-red-500/20 dark:bg-red-500/30 rounded-full'>
+                                                        <Search className='w-4 h-4 text-red-600 dark:text-red-400' />
+                                                        <span className='text-sm font-semibold text-red-700 dark:text-red-300'>
+                                                            {searchType === 'movie' ? 'Movies Only' : 'Actors Only'}
+                                                        </span>
+                                                    </div>
+                                                )}
                                                 {year && (
                                                     <div className='flex items-center gap-2 px-4 py-2 bg-blue-500/20 dark:bg-blue-500/30 rounded-full'>
                                                         <Calendar className='w-4 h-4 text-blue-600 dark:text-blue-400' />
@@ -556,7 +624,7 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                                     })()}
 
                                     {/* Trending Searches Section */}
-                                    {(!value.trim() || !hasHistory) && (
+                                    {showTrendingSearches && (!value.trim() || !hasHistory) && (
                                         <>
                                             {hasHistory && <div className='border-t border-gray-200/50 dark:border-white/10' />}
 
@@ -575,29 +643,70 @@ export const SearchBar = forwardRef<SearchBarRef, SearchBarProps>(
                                             </div>
 
                                             <div className='p-4 sm:p-6'>
-                                                <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3'>
-                                                    {popularSearches.map((search: any, index: number) => (
-                                                        <motion.button
-                                                            key={search.text}
-                                                            onClick={() => handleSuggestionClick(search.text)}
-                                                            className={`group relative p-3 sm:p-4 bg-gradient-to-r ${search.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-lg sm:rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
-                                                            whileHover={{ scale: 1.02, y: -2 }}
-                                                            whileTap={{ scale: 0.98 }}
-                                                            initial={{ opacity: 0, y: 20 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            transition={{ delay: index * 0.05 }}>
-                                                            <div
-                                                                className={`absolute inset-0 bg-gradient-to-r ${search.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
-                                                            />
-                                                            <div className='relative flex flex-col items-center gap-2'>
-                                                                <div className='text-2xl'>{search.icon}</div>
-                                                                <span className='text-sm font-semibold text-gray-900 dark:text-white text-center leading-tight'>
-                                                                    {search.text}
-                                                                </span>
-                                                            </div>
-                                                            <div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12' />
-                                                        </motion.button>
-                                                    ))}
+                                                <div className='space-y-6'>
+                                                    {/* Popular Movies */}
+                                                    <div>
+                                                        <h4 className='text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2'>
+                                                            <Film className='w-4 h-4 text-red-500' />
+                                                            Popular Movies & Series
+                                                        </h4>
+                                                        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3'>
+                                                            {popularSearches.map((search: any, index: number) => (
+                                                                <motion.button
+                                                                    key={search.text}
+                                                                    onClick={() => handleSuggestionClick(search.text, 'movie')}
+                                                                    className={`group relative p-3 sm:p-4 bg-gradient-to-r ${search.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-lg sm:rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
+                                                                    whileHover={{ scale: 1.02, y: -2 }}
+                                                                    whileTap={{ scale: 0.98 }}
+                                                                    initial={{ opacity: 0, y: 20 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    transition={{ delay: index * 0.05 }}>
+                                                                    <div
+                                                                        className={`absolute inset-0 bg-gradient-to-r ${search.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+                                                                    />
+                                                                    <div className='relative flex flex-col items-center gap-2'>
+                                                                        <div className='text-2xl'>{search.icon}</div>
+                                                                        <span className='text-sm font-semibold text-gray-900 dark:text-white text-center leading-tight'>
+                                                                            {search.text}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12' />
+                                                                </motion.button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Popular Actors */}
+                                                    <div>
+                                                        <h4 className='text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2'>
+                                                            <User className='w-4 h-4 text-purple-500' />
+                                                            Popular Actors
+                                                        </h4>
+                                                        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3'>
+                                                            {popularActors.map((actor: any, index: number) => (
+                                                                <motion.button
+                                                                    key={actor.text}
+                                                                    onClick={() => handleSuggestionClick(actor.text, 'actor')}
+                                                                    className={`group relative p-3 sm:p-4 bg-gradient-to-r ${actor.color} bg-opacity-10 hover:bg-opacity-20 dark:bg-opacity-20 dark:hover:bg-opacity-30 rounded-lg sm:rounded-xl border border-white/20 dark:border-white/10 transition-all duration-300 overflow-hidden`}
+                                                                    whileHover={{ scale: 1.02, y: -2 }}
+                                                                    whileTap={{ scale: 0.98 }}
+                                                                    initial={{ opacity: 0, y: 20 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    transition={{ delay: index * 0.05 }}>
+                                                                    <div
+                                                                        className={`absolute inset-0 bg-gradient-to-r ${actor.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+                                                                    />
+                                                                    <div className='relative flex flex-col items-center gap-2'>
+                                                                        <div className='text-2xl'>{actor.icon}</div>
+                                                                        <span className='text-sm font-semibold text-gray-900 dark:text-white text-center leading-tight'>
+                                                                            {actor.text}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12' />
+                                                                </motion.button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </>

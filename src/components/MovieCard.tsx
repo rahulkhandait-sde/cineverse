@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Movie } from "../types/movie";
 import { Card, CardContent } from "./ui/Card";
 import { StarRating } from "./ui/StarRating";
 import { WatchlistButton } from "./WatchlistButton";
-import { WatchedButton } from "./watchedButton";
-import { FavoritesButton } from "./favoritesButton";
 import { Calendar, Film, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -25,9 +23,16 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 	const [isImageLoading, setIsImageLoading] = useState(true);
 	const [imageError, setImageError] = useState(false);
 	const [isNavigating, setIsNavigating] = useState(false);
+	const [retryCount, setRetryCount] = useState(0);
+	const [isHydrated, setIsHydrated] = useState(false);
 
-	const userRating =
-		userRatings.find((r) => r.movieId === movie.imdbID)?.rating || 0;
+	useEffect(() => {
+		setIsHydrated(true);
+	}, []);
+
+	const userRating = isHydrated
+		? userRatings.find((r) => r.movieId === movie.imdbID)?.rating || 0
+		: 0;
 
 	const handleRating = (rating: number) => {
 		const existingIndex = userRatings.findIndex(
@@ -44,9 +49,35 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 		setUserRatings(newRatings);
 	};
 
+	// Generate fallback poster URL using movie title
+	const getFallbackPosterUrl = (title: string) => {
+		const encodedTitle = encodeURIComponent(title);
+		return `https://via.placeholder.com/300x450/1f2937/ffffff?text=${encodedTitle}`;
+	};
+
 	const handleImageError = () => {
-		setImageError(true);
-		setIsImageLoading(false);
+		if (retryCount < 2) {
+			// Retry loading the image
+			setRetryCount(prev => prev + 1);
+			setIsImageLoading(true);
+			setImageError(false);
+			// Force a re-render to retry the image
+			setTimeout(() => {
+				const img = new window.Image();
+				img.onload = () => {
+					setIsImageLoading(false);
+					setImageError(false);
+				};
+				img.onerror = () => {
+					setImageError(true);
+					setIsImageLoading(false);
+				};
+				img.src = movie.Poster;
+			}, 1000);
+		} else {
+			setImageError(true);
+			setIsImageLoading(false);
+		}
 	};
 
 	const handleCardClick = () => {
@@ -112,6 +143,11 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 										}}>
 										<Film className='w-8 h-8 text-blue-500' />
 									</motion.div>
+									{retryCount > 0 && (
+										<div className='absolute bottom-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold'>
+											Retry {retryCount}/2
+										</div>
+									)}
 								</div>
 							)}
 							<Image
@@ -122,19 +158,68 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 								onLoad={() => setIsImageLoading(false)}
 								onError={handleImageError}
 								sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+								priority={index < 6} // Prioritize first 6 images
+							/>
+							{/* Gradient overlay */}
+							<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+						</>
+					) : movie.Poster && movie.Poster !== "N/A" && imageError ? (
+						// Try fallback poster
+						<>
+							{isImageLoading && (
+								<div className='absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950'>
+									<motion.div
+										animate={{ rotate: 360 }}
+										transition={{
+											duration: 1,
+											repeat: Infinity,
+											ease: "linear",
+										}}>
+										<Film className='w-8 h-8 text-blue-500' />
+									</motion.div>
+									<div className='absolute bottom-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold'>
+										Fallback
+									</div>
+								</div>
+							)}
+							<Image
+								src={getFallbackPosterUrl(movie.Title)}
+								alt={movie.Title}
+								fill
+								className='object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110'
+								onLoad={() => setIsImageLoading(false)}
+								onError={() => {
+									setImageError(true);
+									setIsImageLoading(false);
+								}}
+								sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 							/>
 							{/* Gradient overlay */}
 							<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
 						</>
 					) : (
-						<div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-cyan-50 dark:from-blue-950 dark:via-purple-950 dark:to-cyan-950'>
-							<div className='text-center p-6'>
-								<div className='w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center'>
-									<Film className='w-8 h-8 text-white' />
+						<div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-red-500/20 via-purple-500/20 to-blue-500/20 dark:from-red-900/30 dark:via-purple-900/30 dark:to-blue-900/30 relative overflow-hidden'>
+							{/* Animated background pattern */}
+							<div className='absolute inset-0 opacity-10'>
+								<div className='absolute top-0 left-0 w-full h-full bg-gradient-to-br from-red-500/20 via-purple-500/20 to-blue-500/20 animate-pulse'></div>
+								<div className='absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-full blur-xl animate-ping'></div>
+							</div>
+							
+							<div className='text-center p-6 relative z-10'>
+								<div className='w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-500 via-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-2xl'>
+									<Film className='w-10 h-10 text-white' />
 								</div>
-								<p className='text-sm text-gray-600 dark:text-gray-400 font-medium'>
-									No Image Available
+								<h3 className='text-lg font-bold text-gray-900 dark:text-white mb-2'>
+									{movie.Title}
+								</h3>
+								<p className='text-sm text-gray-600 dark:text-gray-300 font-medium'>
+									{movie.Year} • {movie.Type}
 								</p>
+								<div className='mt-3 flex items-center justify-center gap-1'>
+									{[1, 2, 3, 4, 5].map((star) => (
+										<div key={star} className='w-2 h-2 bg-yellow-400 rounded-full opacity-60'></div>
+									))}
+								</div>
 							</div>
 						</div>
 					)}
@@ -173,7 +258,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 					</motion.div>
 
 					{/* Rating badge */}
-					{userRating > 0 && (
+					{isHydrated && userRating > 0 && (
 						<div className='absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg'>
 							⭐ {userRating}
 						</div>
@@ -182,8 +267,6 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 					{/* Watchlist button */}
 					<div className='absolute top-3 left-3'>
 						<WatchlistButton movie={movie} size="sm" />
-						<WatchedButton movie={movie} size="sm" />
-						<FavoritesButton movie={movie} size="sm" />
 					</div>
 
 					{/* Enhanced Loading Overlay */}
@@ -280,11 +363,19 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 							<span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
 								Your Rating:
 							</span>
-							<StarRating
-								rating={userRating}
-								onRatingChange={handleRating}
-								size='sm'
-							/>
+							{isHydrated ? (
+								<StarRating
+									rating={userRating}
+									onRatingChange={handleRating}
+									size='sm'
+								/>
+							) : (
+								<div className='flex gap-1'>
+									{[1, 2, 3, 4, 5].map((star) => (
+										<div key={star} className='w-4 h-4 border border-gray-300 rounded-sm'></div>
+									))}
+								</div>
+							)}
 						</div>
 					</div>
 				</CardContent>

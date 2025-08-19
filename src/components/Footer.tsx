@@ -1,5 +1,14 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 // components/Footer.tsx
 export default function Footer() {
+	const [isHydrated, setIsHydrated] = useState(false);
+
+	useEffect(() => {
+		setIsHydrated(true);
+	}, []);
 	return (
 		<footer className="bg-black text-gray-400 py-10 border-t border-gray-800 mt-16">
 			<div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -37,19 +46,30 @@ export default function Footer() {
 				{/* Newsletter */}
 				<div>
 					<h3 className="text-white font-semibold mb-3">Stay Updated</h3>
-					<form className="flex flex-col space-y-2">
-						<input
-							type="email"
-							placeholder="Enter your email"
-							className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm"
-						/>
-						<button
-							type="submit"
-							className="bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 rounded-md text-sm"
-						>
-							Subscribe
-						</button>
-					</form>
+					{isHydrated ? (
+						<form className="flex flex-col space-y-2">
+							<input
+								type="email"
+								placeholder="Enter your email"
+								className="bg-gray-800 text-white px-3 py-2 rounded-md text-sm"
+							/>
+							<button
+								type="submit"
+								className="bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 rounded-md text-sm"
+							>
+								Subscribe
+							</button>
+						</form>
+					) : (
+						<div className="flex flex-col space-y-2">
+							<div className="bg-gray-800 text-gray-400 px-3 py-2 rounded-md text-sm">
+								Enter your email
+							</div>
+							<div className="bg-pink-600 text-white px-3 py-2 rounded-md text-sm">
+								Subscribe
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 

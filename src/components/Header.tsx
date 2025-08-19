@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // NEW: Import usePathname to detect the current page
 import { usePathname } from "next/navigation";
 import { Film, Search, Menu, Bell, User, Home, Star, Zap, Tv, Grid, X, Bookmark } from "lucide-react";
@@ -20,7 +20,13 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
     // NEW: Get the current URL pathname
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isHydrated, setIsHydrated] = useState(false);
     const watchlistMovies = useSelector((state: RootState) => state.watchlist.movies);
+
+    // Handle hydration to prevent mismatches
+    useEffect(() => {
+        setIsHydrated(true);
+    }, []);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -96,6 +102,19 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                             <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/tv-shows' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
                         </Link>
 
+                        {/* Actors Link with Active State */}
+                        <Link
+                            href='/actors'
+                            className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${
+                                pathname === '/actors'
+                                    ? 'text-gray-900 dark:text-white' // Active style
+                                    : 'text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white' // Inactive style
+                            }`}>
+                            <span className='relative z-10 flex items-center gap-2'><User className='w-4 h-4' />Actors</span>
+                            <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/actors' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
+                            <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/actors' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
+                        </Link>
+
                         {/* Genres Link with Active State */}
                         <Link
                             href='/genres'
@@ -107,27 +126,6 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                             <span className='relative z-10 flex items-center gap-2'><Grid className='w-4 h-4' />Genres</span>
                             <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/genres' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
                             <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/genres' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
-                        </Link>
-
-                        {/* Watchlist Link with Active State */}
-                        <Link
-                            href='/watchlist'
-                            className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${
-                                pathname === '/watchlist'
-                                    ? 'text-gray-900 dark:text-white' // Active style
-                                    : 'text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white' // Inactive style
-                            }`}>
-                            <span className='relative z-10 flex items-center gap-2'>
-                                <Bookmark className='w-4 h-4' />
-                                Watchlist
-                                {watchlistMovies.length > 0 && (
-                                    <span className='bg-gradient-to-r from-red-500 to-purple-600 text-white text-xs px-2 py-0.5 rounded-full font-bold'>
-                                        {watchlistMovies.length}
-                                    </span>
-                                )}
-                            </span>
-                            <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/watchlist' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
-                            <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/watchlist' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
                         </Link>
 
                         {/* Premium Badge - Desktop Only */}
@@ -153,6 +151,20 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                     >
                         <Search className='h-4 w-4 sm:h-4 sm:w-4 md:h-5 md:w-5' />
                     </motion.button>
+                    
+                    {/* Watchlist Button */}
+                    <Link href="/watchlist">
+                        <motion.button 
+                            whileHover={{ scale: 1.1 }} 
+                            whileTap={{ scale: 0.95 }} 
+                            className='relative p-1.5 sm:p-2 md:p-3 text-gray-600 dark:text-white/80 hover:text-gray-800 dark:hover:text-white transition-all duration-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-md sm:rounded-lg md:rounded-xl backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 touch-target'
+                        >
+                            <Bookmark className='h-4 w-4 sm:h-4 sm:w-4 md:h-5 md:w-5' />
+                            {isHydrated && watchlistMovies.length > 0 && (
+                                <div className='absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full border-2 border-white dark:border-black animate-pulse shadow-lg shadow-red-500/50'></div>
+                            )}
+                        </motion.button>
+                    </Link>
                     
                     {/* Notifications - Hidden on mobile */}
                     <motion.button 
@@ -233,12 +245,13 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                             {[
                                 { name: 'Movies', path: '/movies', icon: Home },
                                 { name: 'TV Shows', path: '/tv-shows', icon: Tv },
+                                { name: 'Actors', path: '/actors', icon: User },
                                 { name: 'Genres', path: '/genres', icon: Grid },
                                 { 
                                     name: 'Watchlist', 
                                     path: '/watchlist', 
                                     icon: Bookmark,
-                                    badge: watchlistMovies.length > 0 ? watchlistMovies.length : null
+                                    badge: isHydrated && watchlistMovies.length > 0 ? watchlistMovies.length : null
                                 }
                             ].map((item, index) => {
                                 const Icon = item.icon;
