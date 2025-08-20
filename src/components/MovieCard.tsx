@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocalStorage } from "../hooks/useDebounce";
+import { ShareButton } from "./ShareButton";
 
 interface MovieCardProps {
 	movie: Movie;
@@ -185,7 +186,9 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 						<WatchedButton movie={movie} size="sm" />
 						<FavoritesButton movie={movie} size="sm" />
 					</div>
-
+					<div className='absolute top-1 right-3'>
+						<ShareButton movie={movie} size="sm"/>
+					</div>
 					{/* Enhanced Loading Overlay */}
 					{isNavigating && (
 						<motion.div
