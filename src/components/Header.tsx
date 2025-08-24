@@ -1,7 +1,8 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// NEW: Import usePathname to detect the current page
 import { usePathname } from "next/navigation";
 import { Film, Search, Menu, Bell, User, Home, Star, Zap, Tv, Grid, X, Bookmark } from "lucide-react";
 import { DarkModeToggle } from "./DarkModeToggle";
@@ -17,7 +18,13 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isHydrated, setIsHydrated] = useState(false);
     const watchlistMovies = useSelector((state: RootState) => state.watchlist.movies);
+
+    // Handle hydration to prevent mismatches
+    useEffect(() => {
+        setIsHydrated(true);
+    }, []);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -78,29 +85,33 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                                 <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/movies' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
                             </Link>
 
-                            {/* TV Shows Link with Active State */}
-                            <Link
-                                href='/tv-shows'
-                                className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${pathname === '/tv-shows'
-                                    ? 'text-gray-900 dark:text-white'
-                                    : 'text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white'
-                                    }`}>
-                                <span className='relative z-10 flex items-center gap-2'><Tv className='w-4 h-4' />TV Shows</span>
-                                <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/tv-shows' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
-                                <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/tv-shows' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
-                            </Link>
 
-                            {/* Genres Link with Active State */}
-                            <Link
-                                href='/genres'
-                                className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${pathname === '/genres'
-                                    ? 'text-gray-900 dark:text-white'
-                                    : 'text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white'
-                                    }`}>
-                                <span className='relative z-10 flex items-center gap-2'><Grid className='w-4 h-4' />Genres</span>
-                                <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/genres' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
-                                <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/genres' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
-                            </Link>
+                        {/* Actors Link with Active State */}
+                        <Link
+                            href='/actors'
+                            className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${
+                                pathname === '/actors'
+                                    ? 'text-gray-900 dark:text-white' // Active style
+                                    : 'text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white' // Inactive style
+                            }`}>
+                            <span className='relative z-10 flex items-center gap-2'><User className='w-4 h-4' />Actors</span>
+                            <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/actors' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
+                            <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/actors' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
+                        </Link>
+
+                        {/* Genres Link with Active State */}
+                        <Link
+                            href='/genres'
+                            className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${
+                                pathname === '/genres'
+                                    ? 'text-gray-900 dark:text-white' // Active style
+                                    : 'text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white' // Inactive style
+                            }`}>
+                            <span className='relative z-10 flex items-center gap-2'><Grid className='w-4 h-4' />Genres</span>
+                            <div className={`absolute inset-0 bg-gradient-to-r from-red-500/20 to-purple-500/20 rounded-xl transition-transform duration-300 shadow-lg ${pathname === '/genres' ? 'scale-100' : 'scale-0 group-hover:scale-100'}`}></div>
+                            <div className={`absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-purple-500 rounded-full transition-transform duration-300 ${pathname === '/genres' ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></div>
+                        </Link>
+
 
                             {/* Watchlist Link with Active State */}
                             <Link
@@ -162,12 +173,56 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
                             <DarkModeToggle />
                         </div>
 
-                        {/* User Profile - Responsive */}
-                        <motion.div whileHover={{ scale: 1.05 }} className='hidden sm:block relative group'>
-                            <Link href="/profile">
-                                <motion.button 
-                                    whileTap={{ scale: 0.95 }} 
-                                    className='flex items-center gap-2 md:gap-3 p-1.5 sm:p-2 pr-2 sm:pr-3 md:pr-4 bg-gradient-to-r from-red-600/20 to-purple-600/20 hover:from-red-600/30 hover:to-purple-600/30 backdrop-blur-sm border border-red-500/30 dark:border-white/20 hover:border-red-500/40 dark:hover:border-white/30 rounded-lg md:rounded-xl transition-all duration-300 shadow-lg'
+
+                {/* Right Side Actions */}
+                <div className='flex items-center gap-1 sm:gap-2 md:gap-3 flex-shrink-0'>
+                    {/* Search Button */}
+                    <motion.button 
+                        onClick={onSearchClick || undefined} 
+                        whileHover={{ scale: 1.1 }} 
+                        whileTap={{ scale: 0.95 }} 
+                        className='p-1.5 sm:p-2 md:p-3 text-gray-600 dark:text-white/80 hover:text-gray-800 dark:hover:text-white transition-all duration-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-md sm:rounded-lg md:rounded-xl backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 touch-target'
+                    >
+                        <Search className='h-4 w-4 sm:h-4 sm:w-4 md:h-5 md:w-5' />
+                    </motion.button>
+                    
+                    {/* Watchlist Button */}
+                    <Link href="/watchlist">
+                        <motion.button 
+                            whileHover={{ scale: 1.1 }} 
+                            whileTap={{ scale: 0.95 }} 
+                            className='relative p-1.5 sm:p-2 md:p-3 text-gray-600 dark:text-white/80 hover:text-gray-800 dark:hover:text-white transition-all duration-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-md sm:rounded-lg md:rounded-xl backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 touch-target'
+                        >
+                            <Bookmark className='h-4 w-4 sm:h-4 sm:w-4 md:h-5 md:w-5' />
+                            {isHydrated && watchlistMovies.length > 0 && (
+                                <div className='absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full border-2 border-white dark:border-black animate-pulse shadow-lg shadow-red-500/50'></div>
+                            )}
+                        </motion.button>
+                    </Link>
+                    
+                    {/* Notifications - Hidden on mobile */}
+                    <motion.button 
+                        whileHover={{ scale: 1.1 }} 
+                        whileTap={{ scale: 0.95 }} 
+                        className='hidden sm:flex relative p-2 md:p-3 text-gray-600 dark:text-white/80 hover:text-gray-800 dark:hover:text-white transition-all duration-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg md:rounded-xl backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
+                    >
+                        <Bell className='h-4 w-4 md:h-5 md:w-5' />
+                        <div className='absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full border-2 border-white dark:border-black animate-pulse shadow-lg shadow-red-500/50'></div>
+                        <div className='absolute -top-0.5 -right-0.5 w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-ping'></div>
+                    </motion.button>
+                    
+                    {/* Dark Mode Toggle */}
+                    <div className='p-0.5 sm:p-1 rounded-md sm:rounded-lg md:rounded-xl backdrop-blur-sm border border-gray-200 dark:border-white/10'>
+                        <DarkModeToggle />
+                    </div>
+                    
+                    {/* User Profile - Responsive */}
+                    <motion.div whileHover={{ scale: 1.05 }} className='hidden sm:block relative group'>
+                       <Link href="/profile">
+                            <motion.button 
+                                whileTap={{ scale: 0.95 }} 
+                                className='flex items-center gap-2 md:gap-3 p-1.5 sm:p-2 pr-2 sm:pr-3 md:pr-4 bg-gradient-to-r from-red-600/20 to-purple-600/20 hover:from-red-600/30 hover:to-purple-600/30 backdrop-blur-sm border border-red-500/30 dark:border-white/20 hover:border-red-500/40 dark:hover:border-white/30 rounded-lg md:rounded-xl transition-all duration-300 shadow-lg'
+
                                 >
                                     <div className='relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-gradient-to-br from-red-500 to-purple-600 rounded-md sm:rounded-lg flex items-center justify-center overflow-hidden'>
                                         <User className='h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-white' />
@@ -209,43 +264,47 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
             <div className='absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/60 to-transparent'></div>
             <div className='absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent animate-pulse'></div>
 
-            {/* Mobile Navigation Dropdown */}
-            <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className='fixed top-14 sm:top-16 md:top-20 lg:top-24 left-0 right-0 z-40 md:hidden'>
-                    
-                        <div className='mx-3 sm:mx-4 mt-2 bg-white/95 dark:bg-black/85 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden'>
-                            {/* Mobile Navigation Links */}
-                            <div className='p-3 sm:p-4 space-y-1 sm:space-y-2'>
-                                {[
-                                    { name: 'Movies', path: '/movies', icon: Home },
-                                    { name: 'TV Shows', path: '/tv-shows', icon: Tv },
-                                    { name: 'Genres', path: '/genres', icon: Grid },
-                                    {
-                                        name: 'Watchlist',
-                                        path: '/watchlist',
-                                        icon: Bookmark,
-                                        badge: watchlistMovies.length > 0 ? watchlistMovies.length : null
-                                    }
-                                ].map((item, index) => {
-                                    const Icon = item.icon;
-                                    const isActive = pathname === item.path;
-                                    return (
-                                        <motion.div
-                                            key={item.path}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: index * 0.1, duration: 0.3 }}
-                                        >
-                                            <Link
-                                                href={item.path}
-                                                onClick={() => setIsMobileMenuOpen(false)}
-                                                className={`flex items-center gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 touch-target ${isActive
+
+        {/* Mobile Navigation Dropdown */}
+        <AnimatePresence>
+            {isMobileMenuOpen && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className='fixed top-14 sm:top-16 md:top-20 lg:top-24 left-0 right-0 z-40 md:hidden'
+                >
+                    <div className='mx-3 sm:mx-4 mt-2 bg-white/95 dark:bg-black/85 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden'>
+                        {/* Mobile Navigation Links */}
+                        <div className='p-3 sm:p-4 space-y-1 sm:space-y-2'>
+                            {[
+                                { name: 'Movies', path: '/movies', icon: Home },
+                                { name: 'TV Shows', path: '/tv-shows', icon: Tv },
+                                { name: 'Actors', path: '/actors', icon: User },
+                                { name: 'Genres', path: '/genres', icon: Grid },
+                                { 
+                                    name: 'Watchlist', 
+                                    path: '/watchlist', 
+                                    icon: Bookmark,
+                                    badge: isHydrated && watchlistMovies.length > 0 ? watchlistMovies.length : null
+                                }
+                            ].map((item, index) => {
+                                const Icon = item.icon;
+                                const isActive = pathname === item.path;
+                                return (
+                                    <motion.div
+                                        key={item.path}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: index * 0.1, duration: 0.3 }}
+                                    >
+                                        <Link
+                                            href={item.path}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={`flex items-center gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 touch-target ${
+                                                isActive
+
                                                     ? 'text-white bg-gradient-to-r from-red-600 to-purple-600 shadow-lg'
                                                     : 'text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-white/50 dark:hover:bg-white/5'
                                                     }`}

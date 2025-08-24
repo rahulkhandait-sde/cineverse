@@ -15,27 +15,84 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 }) => {
 	if (type === "details") {
 		return (
-			<div className='animate-pulse'>
-				<div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-					{/* Poster skeleton */}
-					<div className='lg:col-span-1'>
-						<div className='aspect-[2/3] bg-gray-200 dark:bg-gray-700 rounded-lg'></div>
-					</div>
+			<div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-900 relative overflow-hidden">
+				{/* Header Skeleton */}
+				<div className="h-16 bg-white/80 dark:bg-black/60 backdrop-blur-md border-b border-gray-200/50 dark:border-white/10"></div>
 
-					{/* Details skeleton */}
-					<div className='lg:col-span-2 space-y-4'>
-						<div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4'></div>
-						<div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-full'></div>
-						<div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-full'></div>
-						<div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3'></div>
+				<div className="container mx-auto px-4 py-8 pt-32 relative z-10">
+					{/* Back Button Skeleton */}
+					<div className="h-10 w-48 bg-gray-200 dark:bg-gray-800 rounded-full mb-8"></div>
 
-						<div className='grid grid-cols-2 gap-4 mt-6'>
-							{Array.from({ length: 6 }).map((_, i) => (
-								<div key={i} className='space-y-2'>
-									<div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2'></div>
-									<div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4'></div>
+					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+						{/* Poster Skeleton */}
+						<div className="lg:col-span-1">
+							<div className="premium-section overflow-hidden rounded-3xl shadow-2xl">
+								<div className="aspect-[2/3] relative bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 rounded-2xl animate-pulse">
+									<div className="absolute inset-0 flex items-center justify-center">
+										<div className="w-12 h-12 border-4 border-red-500/30 border-t-red-500 rounded-full animate-spin"></div>
+									</div>
 								</div>
-							))}
+							</div>
+						</div>
+
+						{/* Details Skeleton */}
+						<div className="lg:col-span-2 space-y-8">
+							{/* Title & Metadata */}
+							<div className="space-y-6">
+								<div className="h-12 bg-gray-200 dark:bg-gray-800 rounded-xl w-3/4"></div>
+								<div className="flex flex-wrap gap-4">
+									{Array.from({ length: 3 }).map((_, i) => (
+										<div key={i} className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+									))}
+								</div>
+								<div className="flex flex-wrap gap-2">
+									{Array.from({ length: 4 }).map((_, i) => (
+										<div key={i} className="h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+									))}
+								</div>
+							</div>
+
+							{/* Plot Section */}
+							<div className="premium-section rounded-2xl p-8">
+								<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
+								<div className="space-y-3">
+									{Array.from({ length: 4 }).map((_, i) => (
+										<div key={i} className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-full"></div>
+									))}
+									<div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3"></div>
+								</div>
+							</div>
+
+							{/* Cast & Ratings Grid */}
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+								{/* Cast & Crew */}
+								<div className="premium-section rounded-2xl p-8">
+									<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
+									<div className="space-y-4">
+										{Array.from({ length: 3 }).map((_, i) => (
+											<div key={i} className="p-4 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl h-20"></div>
+										))}
+									</div>
+								</div>
+
+								{/* Ratings */}
+								<div className="premium-section rounded-2xl p-8">
+									<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
+									<div className="space-y-4">
+										{Array.from({ length: 3 }).map((_, i) => (
+											<div key={i} className="p-4 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl h-16"></div>
+										))}
+									</div>
+								</div>
+							</div>
+
+							{/* User Rating */}
+							<div className="premium-section rounded-2xl p-8">
+								<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
+								<div className="flex justify-center">
+									<div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
