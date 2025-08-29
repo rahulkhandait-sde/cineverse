@@ -42,7 +42,7 @@ function Login() {
         </form>
         <div className="login-footer">
           <Link href="/signup" className="login-link">
-            Don't have an account? Sign Up
+            Don&apos;t have an account? Sign Up
           </Link>
         </div>
       </div>

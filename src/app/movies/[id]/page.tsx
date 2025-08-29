@@ -33,9 +33,6 @@ export default function MovieDetailsPage() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const movieId = params.id as string;
-	const compareMovies = useSelector (
-		(state:RootState) => state.compare.compareMovies
-	);
 	const { movieDetails, loading, error } = useSelector(
 		(state: RootState) => state.movies
 	);
@@ -94,7 +91,7 @@ export default function MovieDetailsPage() {
 		updatedRatings.push(newRating);
 		setUserRatings(updatedRatings);
 	};
-	const handleAddMovie =async () =>{
+	const handleAddMovie = async () => {
 		dispatch(setLoading(true));
 		dispatch(setError(null));
 		try {
@@ -108,13 +105,11 @@ export default function MovieDetailsPage() {
 			dispatch(setError("Failed to fetch movie details"));
 		} finally {
 			dispatch(setLoading(false));
-			}
 		}
-	
+	};
+
 	if (loading) {
-		return (
-			<LoadingSkeleton type="details" />
-		);
+		return <LoadingSkeleton type='details' />;
 	}
 
 	if (error || !movie) {
@@ -181,19 +176,17 @@ export default function MovieDetailsPage() {
 						Back to Premium Collection
 					</Button>
 				</motion.div>
-					<motion.div
-						initial={{ opacity: 0, x: 20 }}
-						animate={{ opacity: 1, x: 0 }}
-						transition={{ delay: 0.1 }}
-						className="mb-8"
-						>
-						<Button
-							onClick={handleAddMovie}
-							className="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-300"
-						>
-							➕ Add to Compare
-						</Button>
-					</motion.div>
+				<motion.div
+					initial={{ opacity: 0, x: 20 }}
+					animate={{ opacity: 1, x: 0 }}
+					transition={{ delay: 0.1 }}
+					className='mb-8'>
+					<Button
+						onClick={handleAddMovie}
+						className='bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-300'>
+						➕ Add to Compare
+					</Button>
+				</motion.div>
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -426,7 +419,6 @@ export default function MovieDetailsPage() {
 					</div>
 				</motion.div>
 			</main>
-			
 		</div>
 	);
 }

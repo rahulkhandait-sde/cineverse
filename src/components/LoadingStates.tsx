@@ -11,86 +11,95 @@ interface LoadingSkeletonProps {
 
 export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 	type = "search",
-	count = 6,
 }) => {
 	if (type === "details") {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-900 relative overflow-hidden">
+			<div className='min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-900 relative overflow-hidden'>
 				{/* Header Skeleton */}
-				<div className="h-16 bg-white/80 dark:bg-black/60 backdrop-blur-md border-b border-gray-200/50 dark:border-white/10"></div>
+				<div className='h-16 bg-white/80 dark:bg-black/60 backdrop-blur-md border-b border-gray-200/50 dark:border-white/10'></div>
 
-				<div className="container mx-auto px-4 py-8 pt-32 relative z-10">
+				<div className='container mx-auto px-4 py-8 pt-32 relative z-10'>
 					{/* Back Button Skeleton */}
-					<div className="h-10 w-48 bg-gray-200 dark:bg-gray-800 rounded-full mb-8"></div>
+					<div className='h-10 w-48 bg-gray-200 dark:bg-gray-800 rounded-full mb-8'></div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+					<div className='grid grid-cols-1 lg:grid-cols-3 gap-12'>
 						{/* Poster Skeleton */}
-						<div className="lg:col-span-1">
-							<div className="premium-section overflow-hidden rounded-3xl shadow-2xl">
-								<div className="aspect-[2/3] relative bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 rounded-2xl animate-pulse">
-									<div className="absolute inset-0 flex items-center justify-center">
-										<div className="w-12 h-12 border-4 border-red-500/30 border-t-red-500 rounded-full animate-spin"></div>
+						<div className='lg:col-span-1'>
+							<div className='premium-section overflow-hidden rounded-3xl shadow-2xl'>
+								<div className='aspect-[2/3] relative bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 rounded-2xl animate-pulse'>
+									<div className='absolute inset-0 flex items-center justify-center'>
+										<div className='w-12 h-12 border-4 border-red-500/30 border-t-red-500 rounded-full animate-spin'></div>
 									</div>
 								</div>
 							</div>
 						</div>
 
 						{/* Details Skeleton */}
-						<div className="lg:col-span-2 space-y-8">
+						<div className='lg:col-span-2 space-y-8'>
 							{/* Title & Metadata */}
-							<div className="space-y-6">
-								<div className="h-12 bg-gray-200 dark:bg-gray-800 rounded-xl w-3/4"></div>
-								<div className="flex flex-wrap gap-4">
+							<div className='space-y-6'>
+								<div className='h-12 bg-gray-200 dark:bg-gray-800 rounded-xl w-3/4'></div>
+								<div className='flex flex-wrap gap-4'>
 									{Array.from({ length: 3 }).map((_, i) => (
-										<div key={i} className="h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+										<div
+											key={i}
+											className='h-8 w-32 bg-gray-200 dark:bg-gray-800 rounded-full'></div>
 									))}
 								</div>
-								<div className="flex flex-wrap gap-2">
+								<div className='flex flex-wrap gap-2'>
 									{Array.from({ length: 4 }).map((_, i) => (
-										<div key={i} className="h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+										<div
+											key={i}
+											className='h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded-full'></div>
 									))}
 								</div>
 							</div>
 
 							{/* Plot Section */}
-							<div className="premium-section rounded-2xl p-8">
-								<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
-								<div className="space-y-3">
+							<div className='premium-section rounded-2xl p-8'>
+								<div className='h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6'></div>
+								<div className='space-y-3'>
 									{Array.from({ length: 4 }).map((_, i) => (
-										<div key={i} className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-full"></div>
+										<div
+											key={i}
+											className='h-4 bg-gray-200 dark:bg-gray-800 rounded w-full'></div>
 									))}
-									<div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3"></div>
+									<div className='h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3'></div>
 								</div>
 							</div>
 
 							{/* Cast & Ratings Grid */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
 								{/* Cast & Crew */}
-								<div className="premium-section rounded-2xl p-8">
-									<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
-									<div className="space-y-4">
+								<div className='premium-section rounded-2xl p-8'>
+									<div className='h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6'></div>
+									<div className='space-y-4'>
 										{Array.from({ length: 3 }).map((_, i) => (
-											<div key={i} className="p-4 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl h-20"></div>
+											<div
+												key={i}
+												className='p-4 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl h-20'></div>
 										))}
 									</div>
 								</div>
 
 								{/* Ratings */}
-								<div className="premium-section rounded-2xl p-8">
-									<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
-									<div className="space-y-4">
+								<div className='premium-section rounded-2xl p-8'>
+									<div className='h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6'></div>
+									<div className='space-y-4'>
 										{Array.from({ length: 3 }).map((_, i) => (
-											<div key={i} className="p-4 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl h-16"></div>
+											<div
+												key={i}
+												className='p-4 bg-gray-200/50 dark:bg-gray-800/50 rounded-xl h-16'></div>
 										))}
 									</div>
 								</div>
 							</div>
 
 							{/* User Rating */}
-							<div className="premium-section rounded-2xl p-8">
-								<div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6"></div>
-								<div className="flex justify-center">
-									<div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+							<div className='premium-section rounded-2xl p-8'>
+								<div className='h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-lg mb-6'></div>
+								<div className='flex justify-center'>
+									<div className='h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded-full'></div>
 								</div>
 							</div>
 						</div>
@@ -102,32 +111,42 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 
 	if (type === "grid") {
 		return (
-			<div className="flex flex-col items-center justify-center py-32">
+			<div className='flex flex-col items-center justify-center py-32'>
 				<motion.div
 					initial={{ scale: 0.8, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					transition={{ duration: 0.5 }}
-					className="relative w-32 h-32 flex items-center justify-center">
+					className='relative w-32 h-32 flex items-center justify-center'>
 					<motion.div
 						animate={{ rotate: 360 }}
 						transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-						className="absolute inset-0 flex items-center justify-center">
-						<svg width="128" height="128" viewBox="0 0 128 128" className="w-32 h-32">
+						className='absolute inset-0 flex items-center justify-center'>
+						<svg
+							width='128'
+							height='128'
+							viewBox='0 0 128 128'
+							className='w-32 h-32'>
 							<circle
-								cx="64"
-								cy="64"
-								r="56"
-								fill="none"
-								stroke="url(#outer-gradient)"
-								strokeWidth="8"
-								strokeDasharray="60 200"
-								strokeLinecap="round"
+								cx='64'
+								cy='64'
+								r='56'
+								fill='none'
+								stroke='url(#outer-gradient)'
+								strokeWidth='8'
+								strokeDasharray='60 200'
+								strokeLinecap='round'
 							/>
 							<defs>
-								<linearGradient id="outer-gradient" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
-									<stop stopColor="#e11d48" />
-									<stop offset="0.5" stopColor="#a21caf" />
-									<stop offset="1" stopColor="#2563eb" />
+								<linearGradient
+									id='outer-gradient'
+									x1='0'
+									y1='0'
+									x2='128'
+									y2='128'
+									gradientUnits='userSpaceOnUse'>
+									<stop stopColor='#e11d48' />
+									<stop offset='0.5' stopColor='#a21caf' />
+									<stop offset='1' stopColor='#2563eb' />
 								</linearGradient>
 							</defs>
 						</svg>
@@ -135,22 +154,32 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 					<motion.div
 						animate={{ rotate: -360 }}
 						transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-						className="absolute inset-4 flex items-center justify-center">
-						<svg width="96" height="96" viewBox="0 0 96 96" className="w-24 h-24">
+						className='absolute inset-4 flex items-center justify-center'>
+						<svg
+							width='96'
+							height='96'
+							viewBox='0 0 96 96'
+							className='w-24 h-24'>
 							<circle
-								cx="48"
-								cy="48"
-								r="40"
-								fill="none"
-								stroke="url(#middle-gradient)"
-								strokeWidth="6"
-								strokeDasharray="40 120"
-								strokeLinecap="round"
+								cx='48'
+								cy='48'
+								r='40'
+								fill='none'
+								stroke='url(#middle-gradient)'
+								strokeWidth='6'
+								strokeDasharray='40 120'
+								strokeLinecap='round'
 							/>
 							<defs>
-								<linearGradient id="middle-gradient" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
-									<stop stopColor="#f59e42" />
-									<stop offset="1" stopColor="#e11d48" />
+								<linearGradient
+									id='middle-gradient'
+									x1='0'
+									y1='0'
+									x2='96'
+									y2='96'
+									gradientUnits='userSpaceOnUse'>
+									<stop stopColor='#f59e42' />
+									<stop offset='1' stopColor='#e11d48' />
 								</linearGradient>
 							</defs>
 						</svg>
@@ -158,35 +187,41 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 					<motion.div
 						animate={{ rotate: 360 }}
 						transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-						className="absolute inset-10 flex items-center justify-center">
-						<svg width="48" height="48" viewBox="0 0 48 48" className="w-12 h-12">
+						className='absolute inset-10 flex items-center justify-center'>
+						<svg
+							width='48'
+							height='48'
+							viewBox='0 0 48 48'
+							className='w-12 h-12'>
 							<circle
-								cx="24"
-								cy="24"
-								r="18"
-								fill="none"
-								stroke="#fff"
-								strokeWidth="4"
-								strokeDasharray="20 40"
-								strokeLinecap="round"
-								opacity="0.5"
+								cx='24'
+								cy='24'
+								r='18'
+								fill='none'
+								stroke='#fff'
+								strokeWidth='4'
+								strokeDasharray='20 40'
+								strokeLinecap='round'
+								opacity='0.5'
 							/>
 						</svg>
 						<motion.div
 							animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
 							transition={{ duration: 2, repeat: Infinity }}
-							className="absolute flex items-center justify-center w-12 h-12">
-							<Film className="w-8 h-8 text-red-500 drop-shadow-lg" />
+							className='absolute flex items-center justify-center w-12 h-12'>
+							<Film className='w-8 h-8 text-red-500 drop-shadow-lg' />
 						</motion.div>
 					</motion.div>
 				</motion.div>
 				<motion.h3
 					animate={{ opacity: [0.5, 1, 0.5] }}
 					transition={{ duration: 1.5, repeat: Infinity }}
-					className="text-2xl font-bold text-red-500 mt-8 mb-2 text-center">
+					className='text-2xl font-bold text-red-500 mt-8 mb-2 text-center'>
 					Loading Cinematic Content...
 				</motion.h3>
-				<p className="text-gray-400 text-center">Sit back and relax while we fetch your movies</p>
+				<p className='text-gray-400 text-center'>
+					Sit back and relax while we fetch your movies
+				</p>
 			</div>
 		);
 	}
@@ -501,23 +536,24 @@ export const EmptyState: React.FC<{
 							<span className='font-semibold'>Unlimited Access</span>
 						</div>
 					</motion.div>
-					</div>
+				</div>
 				<motion.p
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ delay: 1.5 }}
-  className="text-center max-w-lg mx-auto text-sm leading-relaxed py-4"
-  >
-  <span className="block text-gray-500 dark:text-gray-400 mb-1">
-  </span>
-  <span className="block font-semibold">
-    <span className="text-pink-500">&copy; 2025 </span>
-    <span className="text-blue-500">CineVerse.</span>
-    <span className="text-yellow-600"> Made with </span>
-    <span className="text-red-500">❤️</span>
-    <span className="text-green-500"> to enhance your movie experience.</span>
-  </span>
-</motion.p>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 1.5 }}
+					className='text-center max-w-lg mx-auto text-sm leading-relaxed py-4'>
+					<span className='block text-gray-500 dark:text-gray-400 mb-1'></span>
+					<span className='block font-semibold'>
+						<span className='text-pink-500'>&copy; 2025 </span>
+						<span className='text-blue-500'>CineVerse.</span>
+						<span className='text-yellow-600'> Made with </span>
+						<span className='text-red-500'>❤️</span>
+						<span className='text-green-500'>
+							{" "}
+							to enhance your movie experience.
+						</span>
+					</span>
+				</motion.p>
 			</motion.div>
 		);
 	}
