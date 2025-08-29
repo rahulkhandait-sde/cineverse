@@ -1,4 +1,4 @@
-import { Header } from "../components/Header";
+import Header from "../components/Header";
 import { Button } from "../components/ui/Button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";

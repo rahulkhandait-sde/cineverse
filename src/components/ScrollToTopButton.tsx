@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaArrowUp } from "react-icons/fa";
+import { ArrowUp } from "lucide-react";
 
 const ScrollToTopButton = () => {
 	const [visible, setVisible] = useState(false);
@@ -31,10 +31,9 @@ const ScrollToTopButton = () => {
 	return (
 		<button
 			onClick={scrollToTop}
-			className="fixed bottom-20 right-6 z-50 p-3 rounded-full bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition"
-			aria-label="Scroll to top"
-		>
-			<FaArrowUp />
+			className='fixed bottom-20 right-6 z-50 p-3 rounded-full bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition'
+			aria-label='Scroll to top'>
+			<ArrowUp className='h-4 w-4' />
 		</button>
 	);
 };
