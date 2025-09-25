@@ -27,6 +27,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useLocalStorage } from "../../../hooks/useDebounce";
 import { LoadingSkeleton } from "@/components/LoadingStates";
+import { trailerApi } from "@/services/trailerApi";
+import { TrailerPlayer } from "@/components/TrailerPlayer";
 
 export default function MovieDetailsPage() {
 	const params = useParams();
@@ -40,6 +42,7 @@ export default function MovieDetailsPage() {
 		Array<{ movieId: string; rating: number }>
 	>("userRatings", []);
 	const [isImageLoading, setIsImageLoading] = useState(true);
+	const [trailerVideoId, setTrailerVideoId] = useState<string | null>(null);
 
 	const movie = movieDetails[movieId];
 	const userRating =
@@ -69,6 +72,16 @@ export default function MovieDetailsPage() {
 			fetchMovieDetails();
 		}
 	}, [movieId, movie, dispatch]);
+
+	// Fetch trailer once movie details are available
+	useEffect(() => {
+		const fetchTrailer = async () => {
+			if (!movie?.Title) return;
+			const result = await trailerApi.searchTrailerByTitle(movie.Title, movie.Year);
+			setTrailerVideoId(result?.videoId || null);
+		};
+		fetchTrailer();
+	}, [movie?.Title, movie?.Year]);
 
 	// Update document title dynamically based on movie
 	useEffect(() => {
@@ -277,16 +290,30 @@ export default function MovieDetailsPage() {
 							</div>
 						</motion.div>
 
-						<motion.div
+				<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.4 }}
 							className='premium-section rounded-2xl p-8'>
+					<h2 className='text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent flex items-center gap-3'>
+						<div className='w-8 h-8 bg-gradient-to-r from-red-500 to-purple-500 rounded-lg flex items-center justify-center'>
+							<Film className='w-4 h-4 text-white' />
+						</div>
+						Official Trailer
+					</h2>
+					<TrailerPlayer videoId={trailerVideoId} title={movie.Title} />
+				</motion.div>
+
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.45 }}
+					className='premium-section rounded-2xl p-8'>
 							<h2 className='text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent flex items-center gap-3'>
 								<div className='w-8 h-8 bg-gradient-to-r from-red-500 to-purple-500 rounded-lg flex items-center justify-center'>
 									<Film className='w-4 h-4 text-white' />
 								</div>
-								Plot Synopsis
+						Plot Synopsis
 							</h2>
 							<p className='text-gray-700 dark:text-gray-300 leading-relaxed text-lg font-light'>
 								{movie.Plot}

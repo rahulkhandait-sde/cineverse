@@ -56,3 +56,36 @@ https://www.omdbapi.com/?s=batman&apikey=YOUR_API_KEY_HERE
 ```
 
 Replace `YOUR_API_KEY_HERE` with your actual API key. You should see JSON data with movie results.
+
+---
+
+# YouTube API Setup (for Trailers)
+
+## Get a YouTube Data API v3 Key
+
+1. Open Google Cloud Console (`https://console.cloud.google.com/`)
+2. Create/select a project
+3. Enable API: "YouTube Data API v3"
+4. Create Credentials → API key
+
+## Add to environment
+
+Create or update `.env.local` at the repo root:
+```
+NEXT_PUBLIC_YOUTUBE_API_KEY=YOUR_YOUTUBE_API_KEY
+```
+
+Restart dev server after changes:
+```bash
+npm run dev
+```
+
+## How it’s used
+
+- The app searches YouTube for "<Title> <Year> official trailer" and embeds the top result.
+- If no trailer is found or quota is exceeded, a friendly fallback is shown.
+
+## Notes / Limits
+
+- Respect YouTube quota; we cache responses briefly on the client.
+- If you hit 403/429, trailers will gracefully not render instead of breaking the page.
