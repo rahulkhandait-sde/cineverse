@@ -1,6 +1,26 @@
-# OMDB API Setup Instructions
+# API Setup Instructions
 
-## Getting Your OMDB API Key
+## Gemini (Google Generative Language API)
+
+### Env var
+
+Add this to `.env.local` at the project root:
+
+```
+NEXT_PUBLIC_GEMINI_API_KEY=YOUR_GOOGLE_GENAI_KEY
+```
+
+Restart the dev server after changes.
+
+### Notes
+
+- The Chatbot calls Gemini directly from the browser via the official REST endpoint.
+- Model used: `gemini-1.5-flash-latest`.
+- Requests are sent with the `X-goog-api-key` header.
+
+---
+
+## OMDB API
 
 1. **Visit the OMDB API website**: Go to [http://www.omdbapi.com/apikey.aspx](http://www.omdbapi.com/apikey.aspx)
 

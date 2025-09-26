@@ -181,6 +181,23 @@ npm run start        # Start production server
 npm run lint         # Run ESLint
 ```
 
+## 🔐 Environment Variables
+
+To enable the Gemini-powered multilingual chatbot, set the following environment variable in your environment (e.g., `.env.local`):
+
+```
+GOOGLE_API_KEY=your_google_generative_ai_key
+```
+
+You can obtain an API key by creating a project and enabling the Generative Language API in Google AI Studio.
+
+## 💬 Multilingual Chatbot
+
+- Appears site-wide as a floating button in the bottom-right corner
+- Supports auto language detection or manual selection
+- Helps with movie/actor search, recommendations, and app feature guidance
+- Backend route: `src/app/api/chat/route.ts` using `@google/generative-ai`
+
 ## 🌟 Future Enhancements
 
 - Add user authentication
