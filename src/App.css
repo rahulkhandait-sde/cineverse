@@ -1,0 +1,24 @@
+import "./App.css";
+
+/* Dark mode background */
+body.dark-mode {
+  background: linear-gradient(180deg, #0b0c10 0%, #1f2833 50%, #0b0c10 100%);
+  color: #e0e0e0;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Movie cards */
+.movie-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05), 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  padding: 20px;
+  margin: 15px;
+}
+
+/* Hover effect for cinematic glow */
+.movie-card:hover {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1), 0 8px 20px rgba(0, 0, 0, 0.7);
+  transform: scale(1.03);
+}

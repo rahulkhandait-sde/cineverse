@@ -1,0 +1,36 @@
+import "./Home.css";
+.home-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.movies-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Movie cards with cinematic glow */
+.movie-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05),
+              0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  width: 200px;
+  padding: 10px;
+}
+
+.movie-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.movie-card:hover {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1),
+              0 8px 20px rgba(0, 0, 0, 0.7);
+  transform: scale(1.03);
+}
+
+/* Dark mode background is handled in App.css */
