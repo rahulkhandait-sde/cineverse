@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Mail, Facebook, Twitter, Instagram, Github } from "lucide-react";
+import { Mail, Facebook, Instagram, Github } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -30,12 +30,19 @@ export default function Footer() {
 							className='hover:text-white'>
 							<Facebook className='h-5 w-5' />
 						</a>
-						<a
-							href='https://twitter.com'
-							target='_blank'
-							className='hover:text-white'>
-							<Twitter className='h-5 w-5' />
-						</a>
+										<a
+										  href="https://twitter.com"
+										  target="_blank"
+										  className="hover:text-white"
+										>
+										  <svg
+										    xmlns="http://www.w3.org/2000/svg"
+										    viewBox="0 0 1200 1227"
+										    className="h-5 w-5 fill-current"
+										  >
+										    <path d="M714.163 519.284L1160.89 0H1052.64L668.25 450.887L356.684 0H0L468.696 681.821L0 1226.48H108.253L512.75 741.896L843.316 1226.48H1200L714.137 519.284H714.163ZM567.171 678.249L518.802 609.828L147.253 79.694H305.124L605.286 500.884L653.655 569.305L1052.67 1150.31H894.796L567.171 678.275V678.249Z" />
+										  </svg>
+										</a>
 						<a
 							href='https://instagram.com'
 							target='_blank'
