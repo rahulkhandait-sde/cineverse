@@ -61,29 +61,46 @@ const GenresPage = () => {
 
 			<main className='container mx-auto px-6 pt-32 pb-16 relative z-10'>
 				<div className='text-center mb-16'>
-					<h1 className='text-5xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-7xl'>
-						Explore by Genre
+					<h1 className='text-5xl md:text-6xl lg:text-7xl xl:text-7xl font-black mb-8 leading-tight drop-shadow-xl transform transition-transform duration-100 hover:rotate-2 hover:scale-105'>
+								<span className='block bg-gradient-to-r from-[#8b5cf6] via-[#ec4899] to-[#3b82f6] dark:from-[#a855f7] dark:to-[#06b6d4] bg-clip-text text-transparent'>
+									
+						Explore by Genre</span>
 					</h1>
-					<p className='mt-6 text-xl leading-8 text-gray-600 dark:text-gray-300'>
+					<p className='text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed font-light mb-8'>
 						Find your next favorite story, tailored to your mood.
 					</p>
 				</div>
 
 				{/* Genre Search Bar */}
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, delay: 0.2 }}
-					className='relative mb-12 max-w-lg mx-auto'>
-					<input
-						type='text'
-						placeholder='Search genres...'
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-						className='w-full pl-12 pr-4 py-3 rounded-full bg-white/50 dark:bg-black/50 border border-white/20 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-transparent transition-all duration-300 shadow-lg'
+				
+				<div className="relative w-full mb-10">
+				<div className="flex items-center w-full rounded-full bg-gradient-to-r from-white/80 to-white/60 dark:from-black/100 dark:to-black/100 border-[2px] border-gray-300 focus-within:ring-4 focus-within:ring-red-500/30 focus-within:border-transparent transition-all duration-300 shadow-[0_20px_30px_rgba(255,0,0,0.1)] hover:shadow-[0_0_15px_rgba(255,0,0,0.2)] backdrop-blur-sm">
+					
+					<svg
+					xmlns="http://www.w3.org/2000/svg"
+					className="ml-4 w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
+						d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
 					/>
-					<Search className='absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 dark:text-gray-400' />
-				</motion.div>
+					</svg>
+
+					<input
+					type="text"
+					placeholder="Search genres..."
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					className="w-full pl-3 pr-5 py-4 bg-transparent text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none text-lg font-semibold rounded-full"
+					/>
+				</div>
+				</div>
+
 
 				{/* A grid that dynamically displays a card for each genre in the list */}
 				<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
