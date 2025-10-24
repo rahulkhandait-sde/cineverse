@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
 				<div className='absolute inset-0 bg-gradient-to-r from-red-600/5 via-purple-600/5 to-blue-600/5 dark:from-red-600/5 dark:via-purple-600/5 dark:to-blue-600/5 opacity-80'></div>
 				<div className='absolute inset-0 bg-gradient-to-b from-transparent to-gray-100/20 dark:to-black/20'></div>
 
-				<div className='relative container mx-auto px-3 sm:px-4 md:px-6 h-14 sm:h-16 md:h-20 lg:h-24 flex items-center justify-between'>
+				<div className='relative w-full max-w-[1920px] mx-auto px-6 h-14 sm:h-16 md:h-20 lg:h-24 flex items-center justify-between'>
 					{/* Logo section - responsive sizing */}
 					<Link
 						href='/movies'
@@ -85,9 +85,9 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
 					</Link>
 
 					{/* Navigation Section - Desktop Only */}
-					<div className='hidden md:flex items-center flex-1 justify-start ml-4 lg:ml-8 xl:ml-12'>
+					<div className='hidden md:flex items-center flex-1 justify-center ml-12'>
 						{/* Desktop Navigation */}
-						<nav className='flex items-center gap-1 lg:gap-2'>
+						<nav className='flex items-center space-x-1'>
 							{/* Movies Link with Active State */}
 							<Link
 								href='/movies'
@@ -143,7 +143,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
 							{/* Genres Link with Active State */}
 							<Link
 								href='/genres'
-								className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${
+								className={`relative group px-4 py-2.5 transition-all duration-300 font-semibold tracking-wide ${
 									pathname === "/genres"
 										? "text-gray-900 dark:text-white" // Active style
 										: "text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white" // Inactive style
@@ -169,7 +169,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
 							{/* Watchlist Link with Active State */}
 							<Link
 								href='/watchlist'
-								className={`relative group px-4 lg:px-6 py-3 transition-all duration-300 font-semibold tracking-wide ${
+								className={`relative group px-4 py-2.5 transition-all duration-300 font-semibold tracking-wide whitespace-nowrap ${
 									pathname === "/watchlist"
 										? "text-gray-900 dark:text-white"
 										: "text-gray-700 dark:text-white/90 hover:text-gray-900 dark:hover:text-white"
@@ -210,9 +210,9 @@ export const Header: React.FC<HeaderProps> = ({ onSearchClick }) => {
 					</div>
 
 					{/* Right Side Actions */}
-					<div className='flex items-center gap-3'>
+					<div className='flex items-center justify-end flex-shrink-0'>
 						{/* Right Side Actions */}
-						<div className='flex items-center gap-1 sm:gap-2 md:gap-3 flex-shrink-0'>
+						<div className='flex items-center space-x-2 sm:space-x-3'>
 							{/* Search Button */}
 							<motion.button
 								onClick={onSearchClick || undefined}
